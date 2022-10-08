@@ -1,7 +1,8 @@
 ﻿namespace EgitimPortali.DTO
 {
-    public class KategoriDto
+    public class RolDto
     {
         public string Name { get; set; }
+
     }
 }

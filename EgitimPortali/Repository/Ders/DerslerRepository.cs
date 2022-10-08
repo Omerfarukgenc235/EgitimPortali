@@ -1,15 +1,20 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Dersler;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.Ders
 {
     public class DerslerRepository : IDerslerRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DerslerRepository(SqlServerDbContext context)
+        public DerslerRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool DersEkle(Dersler dersler)
         {
@@ -22,9 +27,32 @@ namespace EgitimPortali.Repository.Ders
             return _context.Derslers.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool DersGuncelle(Dersler dersler)
+        public bool DersGuncelle(int Id, DerslerUpdateRequest dersler)
         {
-            _context.Derslers.Update(dersler);
+            if (dersler == null)
+            {
+                throw new ArgumentNullException(nameof(dersler));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.Dersler cases = _context.Derslers.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (dersler.Name != null) cases.Name = dersler.Name;
+            if (dersler.KategorilerID != null) cases.KategorilerID = (int)dersler.KategorilerID;
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, dersler);
             return Kaydet();
         }
 

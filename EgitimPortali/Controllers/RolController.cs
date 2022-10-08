@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
-using EgitimPortali.Repository.Kategori;
-using EgitimPortali.Request.Kategoriler;
+using EgitimPortali.Repository.Rol;
+using EgitimPortali.Request.Roller;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,34 +10,35 @@ namespace EgitimPortali.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KategoriController : ControllerBase
+    public class RolController : ControllerBase
     {
-        private readonly IKategorilerRepository _kategorilerRepository;
+
+        private readonly IRolRepository _rolRepository;
         private readonly IMapper _mapper;
 
-        public KategoriController(IKategorilerRepository kategorilerRepository, IMapper mapper)
+        public RolController(IRolRepository rolRepository, IMapper mapper)
         {
-            _kategorilerRepository = kategorilerRepository;
+            _rolRepository = rolRepository;
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Kategoriler>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Roller>))]
 
-        public IActionResult KategoriListele()
+        public IActionResult KonuListele()
         {
-            var deger = _kategorilerRepository.KategorileriListele();
+            var deger = _rolRepository.RolleriListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KategoriEkle(KategoriDto categoryCreate)
+        public IActionResult KonuEkle(RolDto konuCreate)
         {
-            if (categoryCreate == null)
+            if (konuCreate == null)
                 return BadRequest(ModelState);
 
-            var category = _kategorilerRepository.KategorileriListele()
-                .Where(x => x.Name.Trim().ToUpper() == categoryCreate.Name.TrimEnd().ToUpper())
+            var category = _rolRepository.RolleriListele()
+                .Where(x => x.Name.Trim().ToUpper() == konuCreate.Name.TrimEnd().ToUpper())
                 .FirstOrDefault();
 
             if (category != null)
@@ -49,9 +50,9 @@ namespace EgitimPortali.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var categoryMap = _mapper.Map<Kategoriler>(categoryCreate);
+            var categoryMap = _mapper.Map<Roller>(konuCreate);
 
-            if (!_kategorilerRepository.KategoriEkle(categoryMap))
+            if (!_rolRepository.RolEkle(categoryMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -59,53 +60,54 @@ namespace EgitimPortali.Controllers
 
             return Ok("Successfuly created");
         }
-        [HttpPut("{categoryId}")]
+        [HttpPut("{rolId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KategoriGuncelle(int categoryId, [FromBody] KategoriUpdateRequest updatedCategory)
+        public IActionResult KonuGuncelle(int rolId, [FromBody] RollerUpdateRequest updatedKonu)
         {
-            if (_kategorilerRepository.KategoriGuncelle(categoryId, updatedCategory))
+            if (_rolRepository.RolGuncelle(rolId, updatedKonu))
             {
                 return Ok();
             }
             return NotFound();
         }
-        [HttpDelete("{categoryId}")]
+        [HttpDelete("{rolId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KategoriSil(int categoryId)
+        public IActionResult KonuSil(int rolId)
         {
-            if (!_kategorilerRepository.KategoriKontrol(categoryId))
+            if (!_rolRepository.RolKontrol(rolId))
             {
                 return NotFound();
             }
 
-            var categoryToDelete = _kategorilerRepository.KategoriGetir(categoryId);
+            var categoryToDelete = _rolRepository.RolGetir(rolId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_kategorilerRepository.KategoriSil(categoryToDelete))
+            if (!_rolRepository.RolSil(categoryToDelete))
             {
                 ModelState.AddModelError("", "Something went wrong deleting category");
             }
 
             return NoContent();
         }
-    
-        [HttpGet("{kategoriId}")]
-        [ProducesResponseType(200, Type = typeof(Kategoriler))]
+
+        [HttpGet("{rolId}")]
+        [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KategoriGetir(int kategoriId)
+        public IActionResult KonuGetir(int rolId)
         {
-            if (!_kategorilerRepository.KategoriKontrol(kategoriId))
+            if (!_rolRepository.RolKontrol(rolId))
                 return NotFound();
-            var kategori = _mapper.Map<KategoriDto>(_kategorilerRepository.KategoriGetir(kategoriId));
+            var kategori = _mapper.Map<RolDto>(_rolRepository.RolGetir(rolId));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
     }
 }
+

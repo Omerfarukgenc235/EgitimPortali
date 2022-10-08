@@ -2,6 +2,7 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.DersIcerik;
+using EgitimPortali.Request.DersIcerikleri;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,25 +62,13 @@ namespace EgitimPortali.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DersGuncelle(int derslericerikleriId, [FromBody] DersIcerikleriDto updatedDersicerikleri)
+        public IActionResult DersGuncelle(int derslericerikleriId, [FromBody] DersIcerikleriUpdateRequest updatedDersicerikleri)
         {
-            if (updatedDersicerikleri == null)
-                return BadRequest(ModelState);
-
-            if (!_dersicerikleriRepository.DersIcerikleriKontrol(derslericerikleriId))
-                return NotFound();
-
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var categoryMap = _mapper.Map<DersIcerikleri>(updatedDersicerikleri);
-
-            if (!_dersicerikleriRepository.DersIcerikleriGuncelle(categoryMap))
+            if (_dersicerikleriRepository.DersIcerikleriGuncelle(derslericerikleriId, updatedDersicerikleri))
             {
-                ModelState.AddModelError("", "Something went wrong updating category");
-                return StatusCode(500, ModelState);
+                return Ok();
             }
-            return NoContent();
+            return NotFound();
         }
         [HttpDelete("{derslericerikleriId}")]
         [ProducesResponseType(400)]

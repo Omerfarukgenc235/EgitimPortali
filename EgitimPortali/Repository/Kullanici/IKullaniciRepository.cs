@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.Kullanicilar;
 
 namespace EgitimPortali.Repository.Kullanici
 {
@@ -8,7 +9,7 @@ namespace EgitimPortali.Repository.Kullanici
         Kullanicilar KullaniciGetir(int id);
         bool KullaniciKontrol(int id);
         bool KullaniciEkle(Kullanicilar kullanicilar);
-        bool KullaniciGuncelle(Kullanicilar kullanicilar);
+        bool KullaniciGuncelle(int Id,KullanicilarUpdateRequest kullanicilar);
         bool KullaniciSil(Kullanicilar kullanicilar);
         bool Kaydet();
     }

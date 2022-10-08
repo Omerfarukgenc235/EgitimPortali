@@ -1,15 +1,20 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.KullanicilarinRolleri;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.KullaniciRol
 {
     public class KullaniciRolRepository : IKullaniciRolRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public KullaniciRolRepository(SqlServerDbContext context)
+        public KullaniciRolRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool Kaydet()
         {
@@ -22,9 +27,33 @@ namespace EgitimPortali.Repository.KullaniciRol
             return Kaydet();
         }
 
-        public bool KullanicilarinRolGuncelle(KullanicilarinRolleri kullanicilarinRolleri)
+        public bool KullanicilarinRolGuncelle(int Id, KullanicilarinRolleriUpdateRequest kullanicilarinRolleri)
         {
-            _context.KullanicilarinRolleris.Update(kullanicilarinRolleri);
+            if (kullanicilarinRolleri == null)
+            {
+                throw new ArgumentNullException(nameof(kullanicilarinRolleri));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.KullanicilarinRolleri cases = _context.KullanicilarinRolleris.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (kullanicilarinRolleri.KullaniciID != null) cases.KullaniciID = (int)kullanicilarinRolleri.KullaniciID;
+            if (kullanicilarinRolleri.RolID != null) cases.RolID = (int)kullanicilarinRolleri.RolID;
+         
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, kullanicilarinRolleri);
             return Kaydet();
         }
 

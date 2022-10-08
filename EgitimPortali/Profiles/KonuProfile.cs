@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Konular;
 
 namespace EgitimPortali.Profiles
 {
@@ -9,7 +10,8 @@ namespace EgitimPortali.Profiles
         public KonuProfile()
         {
             CreateMap<Konular, KonularDto>();
-            CreateMap<KonularDto, Konular>();
+            CreateMap<KonularDto, Konular>();  
+            CreateMap<Konular, KonularUpdateRequest>();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
-using EgitimPortali.Repository.Konu;
-using EgitimPortali.Request.Konular;
+using EgitimPortali.Repository.Hakkımızda;
+using EgitimPortali.Request.Hakkimizda;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,48 +10,41 @@ namespace EgitimPortali.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KonularController : ControllerBase
+    public class HakkimizdaController : ControllerBase
     {
-        private readonly IKonularRepository _konularRepository;
+
+        private readonly IHakkimizdaRepository _hakkimizdaRepository;
         private readonly IMapper _mapper;
 
-        public KonularController(IKonularRepository konularRepository, IMapper mapper)
+        public HakkimizdaController(IHakkimizdaRepository hakkimizdaRepository, IMapper mapper)
         {
-            _konularRepository = konularRepository;
+            _hakkimizdaRepository = hakkimizdaRepository;
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Hakkimizda>))]
 
         public IActionResult KonuListele()
         {
-            var deger = _konularRepository.KonulariListele();
+            var deger = _hakkimizdaRepository.HakkimizdaListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KonuEkle(KonularDto konuCreate)
+        public IActionResult KonuEkle(HakkimizdaDto hakkimizdaCreate)
         {
-            if (konuCreate == null)
+            if (hakkimizdaCreate == null)
                 return BadRequest(ModelState);
 
-            var category = _konularRepository.KonulariListele()
-                .Where(x => x.Name.Trim().ToUpper() == konuCreate.Name.TrimEnd().ToUpper())
-                .FirstOrDefault();
 
-            if (category != null)
-            {
-                ModelState.AddModelError("", "Category already exists");
-                return StatusCode(422, ModelState);
-            }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var categoryMap = _mapper.Map<Konular>(konuCreate);
+            var categoryMap = _mapper.Map<Hakkimizda>(hakkimizdaCreate);
 
-            if (!_konularRepository.KonuEkle(categoryMap))
+            if (!_hakkimizdaRepository.HakkimizdaEkle(categoryMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -59,35 +52,35 @@ namespace EgitimPortali.Controllers
 
             return Ok("Successfuly created");
         }
-        [HttpPut("{konuId}")]
+        [HttpPut("{hakkimizid}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KonuGuncelle(int konuId, [FromBody] KonularUpdateRequest updatedKonu)
+        public IActionResult KonuGuncelle(int hakkimizid, [FromBody] HakkimizdaUpdateRequest updatedAnasayfa)
         {
-            if (_konularRepository.KonuGuncelle(konuId, updatedKonu))
+            if (_hakkimizdaRepository.HakkimizdaGuncelle(hakkimizid, updatedAnasayfa))
             {
                 return Ok();
             }
             return NotFound();
         }
-        [HttpDelete("{konuId}")]
+        [HttpDelete("{hakkimizid}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KonuSil(int konuId)
+        public IActionResult KonuSil(int hakkimizid)
         {
-            if (!_konularRepository.KonuKontrol(konuId))
+            if (!_hakkimizdaRepository.HakkimizdaKontrol(hakkimizid))
             {
                 return NotFound();
             }
 
-            var categoryToDelete = _konularRepository.KonuGetir(konuId);
+            var categoryToDelete = _hakkimizdaRepository.HakkimizdaGetir(hakkimizid);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_konularRepository.KonuSil(categoryToDelete))
+            if (!_hakkimizdaRepository.HakkimizdaSil(categoryToDelete))
             {
                 ModelState.AddModelError("", "Something went wrong deleting category");
             }
@@ -95,17 +88,18 @@ namespace EgitimPortali.Controllers
             return NoContent();
         }
 
-        [HttpGet("{konuId}")]
+        [HttpGet("{hakkimizid}")]
         [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KonuGetir(int konuId)
+        public IActionResult KonuGetir(int hakkimizid)
         {
-            if (!_konularRepository.KonuKontrol(konuId))
+            if (!_hakkimizdaRepository.HakkimizdaKontrol(hakkimizid))
                 return NotFound();
-            var kategori = _mapper.Map<KonularDto>(_konularRepository.KonuGetir(konuId));
+            var kategori = _mapper.Map<HakkimizdaDto>(_hakkimizdaRepository.HakkimizdaGetir(hakkimizid));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
     }
 }
+

@@ -2,6 +2,7 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Ders;
+using EgitimPortali.Request.Dersler;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,25 +63,13 @@ namespace EgitimPortali.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DersGuncelle(int derslerId, [FromBody] DerslerDto updatedDersler)
+        public IActionResult DersGuncelle(int derslerId, [FromBody] DerslerUpdateRequest updatedDersler)
         {
-            if (updatedDersler == null)
-                return BadRequest(ModelState);
-
-            if (!_derslerRepository.DersKontrol(derslerId))
-                return NotFound();
-
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var categoryMap = _mapper.Map<Dersler>(updatedDersler);
-
-            if (!_derslerRepository.DersGuncelle(categoryMap))
+            if (_derslerRepository.DersGuncelle(derslerId, updatedDersler))
             {
-                ModelState.AddModelError("", "Something went wrong updating category");
-                return StatusCode(500, ModelState);
+                return Ok();
             }
-            return NoContent();
+            return NotFound();
         }
         [HttpDelete("{derslerId}")]
         [ProducesResponseType(400)]

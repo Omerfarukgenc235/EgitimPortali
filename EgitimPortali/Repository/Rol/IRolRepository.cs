@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.Roller;
 
 namespace EgitimPortali.Repository.Rol
 {
@@ -8,7 +9,7 @@ namespace EgitimPortali.Repository.Rol
         Roller RolGetir(int id);
         bool RolKontrol(int id);
         bool RolEkle(Roller roller);
-        bool RolGuncelle(Roller roller);
+        bool RolGuncelle(int Id,RollerUpdateRequest roller);
         bool RolSil(Roller roller);
         bool Kaydet();
     }

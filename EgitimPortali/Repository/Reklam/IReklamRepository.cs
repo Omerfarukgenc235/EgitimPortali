@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.Reklamlar;
 
 namespace EgitimPortali.Repository.Reklam
 {
@@ -8,7 +9,7 @@ namespace EgitimPortali.Repository.Reklam
         Reklamlar ReklamGetir(int id);
         bool ReklamKontrol(int id);
         bool ReklamEkle(Reklamlar reklam);
-        bool ReklamGuncelle(Reklamlar reklam);
+        bool ReklamGuncelle(int Id,ReklamlarUpdateRequest reklam);
         bool ReklamSil(Reklamlar reklam);
         bool Kaydet();
     }

@@ -1,15 +1,20 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Roller;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.Rol
 {
     public class RolRepository : IRolRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public RolRepository(SqlServerDbContext context)
+        public RolRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool Kaydet()
         {
@@ -27,9 +32,31 @@ namespace EgitimPortali.Repository.Rol
             return _context.Rollers.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool RolGuncelle(Roller roller)
+        public bool RolGuncelle(int Id,RollerUpdateRequest roller)
         {
-            _context.Rollers.Update(roller);
+            if (roller == null)
+            {
+                throw new ArgumentNullException(nameof(roller));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.Roller cases = _context.Rollers.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (roller.Name != null) cases.Name = roller.Name;
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, roller);
             return Kaydet();
         }
 

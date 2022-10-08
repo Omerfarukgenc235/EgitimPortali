@@ -1,15 +1,20 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.DersIcerikleri;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.DersIcerik
 {
     public class DersIcerikRepository : IDersIcerikRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DersIcerikRepository(SqlServerDbContext context)
+        public DersIcerikRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool DersIcerikleriEkle(DersIcerikleri dersIcerikleri)
         {
@@ -22,9 +27,32 @@ namespace EgitimPortali.Repository.DersIcerik
             return _context.DersIcerikleris.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool DersIcerikleriGuncelle(DersIcerikleri dersIcerikleri)
+        public bool DersIcerikleriGuncelle(int Id, DersIcerikleriUpdateRequest dersIcerikleri)
         {
-            _context.DersIcerikleris.Update(dersIcerikleri);
+            if (dersIcerikleri == null)
+            {
+                throw new ArgumentNullException(nameof(dersIcerikleri));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.DersIcerikleri cases = _context.DersIcerikleris.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (dersIcerikleri.KonularID != null) cases.KonularID = (int)dersIcerikleri.KonularID;
+            if (dersIcerikleri.Name != null) cases.Name = dersIcerikleri.Name;
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, dersIcerikleri);
             return Kaydet();
         }
 

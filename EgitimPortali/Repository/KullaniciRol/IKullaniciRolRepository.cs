@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.KullanicilarinRolleri;
 
 namespace EgitimPortali.Repository.KullaniciRol
 {
@@ -8,7 +9,7 @@ namespace EgitimPortali.Repository.KullaniciRol
         KullanicilarinRolleri KullanicilarinRolleriGetir(int id);
         bool KullanicilarinRolKontrol(int id);
         bool KullanicilarinRolEkle(KullanicilarinRolleri kullanicilarinRolleri);
-        bool KullanicilarinRolGuncelle(KullanicilarinRolleri kullanicilarinRolleri);
+        bool KullanicilarinRolGuncelle(int Id,KullanicilarinRolleriUpdateRequest kullanicilarinRolleri);
         bool KullanicilarinRolSil(KullanicilarinRolleri kullanicilarinRolleri);
         bool Kaydet();
     }

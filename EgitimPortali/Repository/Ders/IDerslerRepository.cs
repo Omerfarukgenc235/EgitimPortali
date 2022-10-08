@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.Dersler;
 
 namespace EgitimPortali.Repository.Ders
 {
@@ -8,7 +9,7 @@ namespace EgitimPortali.Repository.Ders
         Dersler DersGetir(int id);
         bool DersKontrol(int id);
         bool DersEkle(Dersler dersler);
-        bool DersGuncelle(Dersler dersler);
+        bool DersGuncelle(int Id, DerslerUpdateRequest dersler);
         bool DersSil(Dersler dersler);
         bool Kaydet();
     }

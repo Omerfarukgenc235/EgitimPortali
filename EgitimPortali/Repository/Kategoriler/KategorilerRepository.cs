@@ -1,17 +1,22 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Kategoriler;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.Kategori
 {
     public class KategorilerRepository : IKategorilerRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public KategorilerRepository(SqlServerDbContext context)
+        public KategorilerRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-       
+
         public bool KategoriEkle(Kategoriler category)
         {
             _context.Kategorilers.Add(category);
@@ -23,9 +28,31 @@ namespace EgitimPortali.Repository.Kategori
             return _context.Kategorilers.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool KategoriGuncelle(Kategoriler category)
+        public bool KategoriGuncelle(int Id,KategoriUpdateRequest category)
         {
-            _context.Kategorilers.Update(category);
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.Kategoriler cases = _context.Kategorilers.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (category.Name != null) cases.Name = category.Name;
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, category);
             return Kaydet();
         }
 

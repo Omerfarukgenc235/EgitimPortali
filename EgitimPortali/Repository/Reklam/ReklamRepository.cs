@@ -1,15 +1,20 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Reklamlar;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.Reklam
 {
     public class ReklamRepository : IReklamRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ReklamRepository(SqlServerDbContext context)
+        public ReklamRepository(SqlServerDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool Kaydet()
         {
@@ -27,9 +32,33 @@ namespace EgitimPortali.Repository.Reklam
             return _context.Reklamlars.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool ReklamGuncelle(Reklamlar reklam)
+        public bool ReklamGuncelle(int Id, ReklamlarUpdateRequest reklam)
         {
-            _context.Reklamlars.Update(reklam);
+            if (reklam == null)
+            {
+                throw new ArgumentNullException(nameof(reklam));
+                return false;
+            }
+
+            if (Id == null)
+            {
+                throw new ArgumentNullException(nameof(Id));
+                return false;
+            }
+
+            Models.Reklamlar cases = _context.Reklamlars.FirstOrDefault(u => u.Id == Id);
+
+            if (cases == null)
+            {
+                throw new KeyNotFoundException(nameof(Id));
+                return false;
+            }
+
+            if (reklam.Icerik != null) cases.Icerik = reklam.Icerik;
+            if (reklam.UstBaslik != null) cases.UstBaslik = reklam.UstBaslik;
+            if (reklam.Gorsel != null) cases.Gorsel = reklam.Gorsel;
+            _context.Entry(cases).State = EntityState.Modified;
+            _mapper.Map(cases, reklam);
             return Kaydet();
         }
 

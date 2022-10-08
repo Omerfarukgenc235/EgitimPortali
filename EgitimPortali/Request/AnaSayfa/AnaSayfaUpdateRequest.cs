@@ -4,5 +4,6 @@
     {
         public String? UstBaslik { get; set; }
         public String? Icerik { get; set; }
+     
     }
 }

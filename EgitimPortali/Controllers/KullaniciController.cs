@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
-using EgitimPortali.Repository.Kategori;
-using EgitimPortali.Request.Kategoriler;
+using EgitimPortali.Repository.Kullanici;
+using EgitimPortali.Request.Kullanicilar;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,34 +10,34 @@ namespace EgitimPortali.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KategoriController : ControllerBase
+    public class KullaniciController : ControllerBase
     {
-        private readonly IKategorilerRepository _kategorilerRepository;
+        private readonly IKullaniciRepository _kullaniciRepository;
         private readonly IMapper _mapper;
 
-        public KategoriController(IKategorilerRepository kategorilerRepository, IMapper mapper)
+        public KullaniciController(IKullaniciRepository kullaniciRepository, IMapper mapper)
         {
-            _kategorilerRepository = kategorilerRepository;
+            _kullaniciRepository = kullaniciRepository;
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Kategoriler>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Kullanicilar>))]
 
-        public IActionResult KategoriListele()
+        public IActionResult KullaniciListele()
         {
-            var deger = _kategorilerRepository.KategorileriListele();
+            var deger = _kullaniciRepository.KullanicilariListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KategoriEkle(KategoriDto categoryCreate)
+        public IActionResult KonuEkle(KullanicilarPostRequest kullaniciCreate)
         {
-            if (categoryCreate == null)
+            if (kullaniciCreate == null)
                 return BadRequest(ModelState);
 
-            var category = _kategorilerRepository.KategorileriListele()
-                .Where(x => x.Name.Trim().ToUpper() == categoryCreate.Name.TrimEnd().ToUpper())
+            var category = _kullaniciRepository.KullanicilariListele()
+                .Where(x => x.Mail.Trim().ToUpper() == kullaniciCreate.Mail.TrimEnd().ToUpper())
                 .FirstOrDefault();
 
             if (category != null)
@@ -49,9 +49,9 @@ namespace EgitimPortali.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var categoryMap = _mapper.Map<Kategoriler>(categoryCreate);
+            var categoryMap = _mapper.Map<Kullanicilar>(kullaniciCreate);
 
-            if (!_kategorilerRepository.KategoriEkle(categoryMap))
+            if (!_kullaniciRepository.KullaniciEkle(categoryMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -59,50 +59,50 @@ namespace EgitimPortali.Controllers
 
             return Ok("Successfuly created");
         }
-        [HttpPut("{categoryId}")]
+        [HttpPut("{kullaniciId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KategoriGuncelle(int categoryId, [FromBody] KategoriUpdateRequest updatedCategory)
+        public IActionResult KullaniciGuncelle(int kullaniciId, [FromBody] KullanicilarUpdateRequest updatedKullanici)
         {
-            if (_kategorilerRepository.KategoriGuncelle(categoryId, updatedCategory))
+            if (_kullaniciRepository.KullaniciGuncelle(kullaniciId, updatedKullanici))
             {
                 return Ok();
             }
             return NotFound();
         }
-        [HttpDelete("{categoryId}")]
+        [HttpDelete("{kullaniciId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KategoriSil(int categoryId)
+        public IActionResult KonuSil(int kullaniciId)
         {
-            if (!_kategorilerRepository.KategoriKontrol(categoryId))
+            if (!_kullaniciRepository.KullaniciKontrol(kullaniciId))
             {
                 return NotFound();
             }
 
-            var categoryToDelete = _kategorilerRepository.KategoriGetir(categoryId);
+            var categoryToDelete = _kullaniciRepository.KullaniciGetir(kullaniciId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_kategorilerRepository.KategoriSil(categoryToDelete))
+            if (!_kullaniciRepository.KullaniciSil(categoryToDelete))
             {
                 ModelState.AddModelError("", "Something went wrong deleting category");
             }
 
             return NoContent();
         }
-    
-        [HttpGet("{kategoriId}")]
-        [ProducesResponseType(200, Type = typeof(Kategoriler))]
+
+        [HttpGet("{kullaniciId}")]
+        [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KategoriGetir(int kategoriId)
+        public IActionResult KonuGetir(int kullaniciId)
         {
-            if (!_kategorilerRepository.KategoriKontrol(kategoriId))
+            if (!_kullaniciRepository.KullaniciKontrol(kullaniciId))
                 return NotFound();
-            var kategori = _mapper.Map<KategoriDto>(_kategorilerRepository.KategoriGetir(kategoriId));
+            var kategori = _mapper.Map<KullaniciDto>(_kullaniciRepository.KullaniciGetir(kullaniciId));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);
