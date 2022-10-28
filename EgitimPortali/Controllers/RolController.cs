@@ -32,7 +32,7 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KonuEkle(RolDto konuCreate)
+        public IActionResult KonuEkle(RollerPostRequest konuCreate)
         {
             if (konuCreate == null)
                 return BadRequest(ModelState);

@@ -3,6 +3,7 @@ using EgitimPortali.Repository.Anasayfa;
 using EgitimPortali.Repository.Ders;
 using EgitimPortali.Repository.DersIcerik;
 using EgitimPortali.Repository.Hakkýmýzda;
+using EgitimPortali.Repository.Iletisimler;
 using EgitimPortali.Repository.Kategori;
 using EgitimPortali.Repository.Konu;
 using EgitimPortali.Repository.Kullanici;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IYorumRepository, YorumRepository>();
 builder.Services.AddScoped<ISoruRepository, SoruRepository>();
 builder.Services.AddScoped<ISoruCevapRepository, SoruCevapRepository>();
 builder.Services.AddScoped<IRolRepository, RolRepository>();
+builder.Services.AddScoped<IIletisimRepository, IletisimRepository>();
 builder.Services.AddScoped<IKullaniciRepository, KullaniciRepository>();
 builder.Services.AddScoped<IKullaniciRolRepository, KullaniciRolRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -40,6 +42,11 @@ builder.Services.AddDbContext<SqlServerDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +54,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    
 }
 
 app.UseHttpsRedirection();

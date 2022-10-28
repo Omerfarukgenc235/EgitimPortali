@@ -1,0 +1,35 @@
+﻿@using EgitimPortali.DTO
+@model List<RolDto>
+@{
+    ViewData["Title"] = "ButunRoller";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<a href="/Rol/RolEkle" class="btn btn-primary" style="float: right;">Yeni Rol Ekle</a>
+<br />
+<br />
+<div class="ibox ">
+    <div class="ibox-title">
+        <h5>Bütün Roller</h5>
+        <div class="ibox-tools">
+        </div>
+    </div>
+    <div class="ibox-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rol Adı</th>
+                    <th>Rol Düzenle</th>
+                    <th>Rol Sil</th>
+                </tr>
+            </thead>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td><a href="/Rol/RolGuncelle/@x.Id" class="btn btn-success">Güncelle</a></td>
+                    <td><a href="/Rol/RolSil/@x.Id" class="btn btn-danger">Sil</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

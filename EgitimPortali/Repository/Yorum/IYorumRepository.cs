@@ -1,10 +1,13 @@
-﻿using EgitimPortali.Models;
+﻿using EgitimPortali.DTO;
+using EgitimPortali.Models;
 
 namespace EgitimPortali.Repository.Yorum
 {
     public interface IYorumRepository
     {
-        ICollection<Yorumlar> YorumiListele();
+        ICollection<Yorumlar> YorumlariListele();
+        ICollection<Yorumlar> DerslereGoreYorumListele();
+        ICollection<Yorumlar> IcerikYorumlariniListele(int icerikid);
         Yorumlar YorumGetir(int id);
         bool YorumKontrol(int id);
         bool YorumEkle(Yorumlar yorumlar);

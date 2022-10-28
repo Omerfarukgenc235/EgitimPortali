@@ -22,7 +22,6 @@ namespace EgitimPortali.Controllers
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Dersler>))]
-
         public IActionResult DersListele()
         {
             var deger = _derslerRepository.DersleriListele();
@@ -97,11 +96,23 @@ namespace EgitimPortali.Controllers
         [HttpGet("{derslerId}")]
         [ProducesResponseType(200, Type = typeof(Kategoriler))]
         [ProducesResponseType(400)]
-        public IActionResult GetCountry(int derslerId)
+        public IActionResult DersGetir(int derslerId)
         {
             if (!_derslerRepository.DersKontrol(derslerId))
                 return NotFound();
             var kategori = _mapper.Map<DerslerDto>(_derslerRepository.DersGetir(derslerId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(kategori);
+        }
+        [HttpGet("dersler/{derslerinKategorisiId}")]
+        [ProducesResponseType(200, Type = typeof(Kategoriler))]
+        [ProducesResponseType(400)]
+        public IActionResult DersKategorisiGetir(int derslerinKategorisiId)
+        {
+            if (!_derslerRepository.DersKontrol(derslerinKategorisiId))
+                return NotFound();
+            var kategori = _derslerRepository.KategoriAdi(derslerinKategorisiId);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);

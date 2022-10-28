@@ -2,6 +2,7 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Yorum;
+using EgitimPortali.Request.Yorumlar;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,15 +23,26 @@ namespace EgitimPortali.Controllers
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Yorumlar>))]
 
-        public IActionResult KonuListele()
+        public IActionResult YorumlariListele()
         {
-            var deger = _yorumRepository.YorumiListele();
+            var deger = _yorumRepository.YorumlariListele();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
+        
+        [HttpGet("DerslereGoreYorumListeleme")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Yorumlar>))]
+
+        public IActionResult DerslereGoreYorumListeleme()
+        {
+            var deger = _yorumRepository.DerslereGoreYorumListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KonuEkle(YorumlarDto yorumlarCreate)
+        public IActionResult YorumEkle(YorumlarPostRequest yorumlarCreate)
         {
             if (yorumlarCreate == null)
                 return BadRequest(ModelState);
@@ -54,7 +66,7 @@ namespace EgitimPortali.Controllers
         [HttpDelete("{yorumId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KonuSil(int yorumId)
+        public IActionResult YorumSil(int yorumId)
         {
             if (!_yorumRepository.YorumKontrol(yorumId))
             {
@@ -77,7 +89,7 @@ namespace EgitimPortali.Controllers
         [HttpGet("{yorumId}")]
         [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KonuGetir(int yorumId)
+        public IActionResult YorumGetir(int yorumId)
         {
             if (!_yorumRepository.YorumKontrol(yorumId))
                 return NotFound();
@@ -86,5 +98,15 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
+        [HttpGet("yorumlar/{icerikid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Yorumlar>))]
+        public IActionResult IcerikYorumlariniListele(int icerikid)
+        {
+            var deger = _yorumRepository.IcerikYorumlariniListele(icerikid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
+
     }
 }

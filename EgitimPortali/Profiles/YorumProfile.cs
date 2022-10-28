@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Yorumlar;
 
 namespace EgitimPortali.Profiles
 {
@@ -10,6 +11,7 @@ namespace EgitimPortali.Profiles
         {
             CreateMap<Yorumlar, YorumlarDto>();
             CreateMap<YorumlarDto, Yorumlar>();
+            CreateMap<YorumlarPostRequest, Yorumlar>();
         }
     }
 }

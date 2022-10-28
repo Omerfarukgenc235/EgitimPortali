@@ -11,6 +11,7 @@ namespace EgitimPortali.Profiles
         {
             CreateMap<Dersler, DerslerDto>();
             CreateMap<DerslerDto, Dersler>();
+            CreateMap<DerslerUpdateRequest, Dersler>();
             CreateMap<Dersler, DerslerUpdateRequest>();
         }
     }

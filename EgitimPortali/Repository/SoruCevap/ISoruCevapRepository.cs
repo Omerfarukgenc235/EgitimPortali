@@ -5,6 +5,7 @@ namespace EgitimPortali.Repository.SoruCevap
     public interface ISoruCevapRepository
     {
         ICollection<SorularinCevaplari> SorularinCevaplariListele();
+        ICollection<SorularinCevaplari> CevaplariSoralaraGoreGetir(int id);
         SorularinCevaplari SorularinCevaplariGetir(int id);
         bool SorularinCevaplariKontrol(int id);
         bool SorularinCevaplariEkle(SorularinCevaplari sorularinCevaplari);

@@ -2,6 +2,7 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Iletisimler;
+using EgitimPortali.Request.Iletisim;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,12 +31,10 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult IletisimEkle(IletisimDto iletisimCreate)
+        public IActionResult IletisimEkle(IletisimPostRequest iletisimCreate)
         {
             if (iletisimCreate == null)
                 return BadRequest(ModelState);
-
-
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

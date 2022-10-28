@@ -72,6 +72,13 @@ namespace EgitimPortali.Repository.Ders
             return Kaydet();
         }
 
+        public string KategoriAdi(int id)
+        {
+            var deger = _context.Derslers.Where(x => x.Id == id).FirstOrDefault();
+            var deger2 = _context.Kategorilers.Where(x => x.Id == deger.KategorilerID).FirstOrDefault();
+            return deger2.Name;
+        }
+
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);

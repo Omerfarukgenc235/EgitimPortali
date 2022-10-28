@@ -1,16 +1,27 @@
-﻿using EgitimPortali.Context;
+﻿using AutoMapper;
+using EgitimPortali.Context;
+using EgitimPortali.DTO;
 using EgitimPortali.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EgitimPortali.Repository.Yorum
 {
     public class YorumRepository : IYorumRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IMapper _mapper;
 
-        public YorumRepository(SqlServerDbContext context)
+        public YorumRepository(SqlServerDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
+
+        public ICollection<Yorumlar> IcerikYorumlariniListele(int icerikid)
+        {
+            return _context.Yorumlars.Where(x => x.DersIcerikleriID == icerikid).ToList();
+        }
+
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);
@@ -33,9 +44,13 @@ namespace EgitimPortali.Repository.Yorum
             return Kaydet();
         }
 
-        public ICollection<Yorumlar> YorumiListele()
+        public ICollection<Yorumlar> YorumlariListele()
         {
             return _context.Yorumlars.ToList();
+        }
+        public ICollection<Yorumlar> DerslereGoreYorumListele()
+        {
+            return _context.Yorumlars.Include(x => x.DersIcerikleri).ToList();
         }
 
         public bool YorumKontrol(int id)

@@ -11,6 +11,12 @@ namespace EgitimPortali.Repository.SoruCevap
         {
             _context = context;
         }
+
+        public ICollection<SorularinCevaplari> CevaplariSoralaraGoreGetir(int id)
+        {
+            return _context.SorularinCevaplaris.Where(x => x.SorularID == id).ToList();
+        }
+
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);

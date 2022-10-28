@@ -12,6 +12,7 @@ namespace EgitimPortali.Profiles
             CreateMap<DersIcerikleri, DersIcerikleriDto>();
             CreateMap<DersIcerikleriDto, DersIcerikleri>();
             CreateMap<DersIcerikleri, DersIcerikleriUpdateRequest>();
+            CreateMap<DersIcerikleriPostRequest, DersIcerikleri>();
         }
     }
 }

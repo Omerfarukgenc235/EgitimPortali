@@ -11,6 +11,12 @@ namespace EgitimPortali.Repository.Soru
         {
             _context = context;
         }
+
+        public ICollection<Sorular> DerslereGoreSoruListeleme(int dersid)
+        {
+            return _context.Sorulars.Where(x => x.DerslerID == dersid).ToList();
+        }
+
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);

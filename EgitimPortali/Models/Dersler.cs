@@ -9,6 +9,6 @@ namespace EgitimPortali.Models
         public int KategorilerID { get; set; }
         public Kategoriler Kategoriler { get; set; }  
         public ICollection<Konular> Konulars { get; set; }
-
+        public ICollection<Sorular> Sorulars { get; set; }
     }
 }

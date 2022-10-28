@@ -78,6 +78,10 @@ namespace EgitimPortali.Migrations
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Icerik")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -86,6 +90,12 @@ namespace EgitimPortali.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PdfYolu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Resim")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -195,6 +205,10 @@ namespace EgitimPortali.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Konu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -272,6 +286,9 @@ namespace EgitimPortali.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Resim")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -453,7 +470,7 @@ namespace EgitimPortali.Migrations
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("DersIcerikleriID")
+                    b.Property<int>("DerslerID")
                         .HasColumnType("int");
 
                     b.Property<string>("Icerik")
@@ -469,7 +486,7 @@ namespace EgitimPortali.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DersIcerikleriID");
+                    b.HasIndex("DerslerID");
 
                     b.ToTable("Sorulars");
                 });
@@ -602,13 +619,13 @@ namespace EgitimPortali.Migrations
 
             modelBuilder.Entity("EgitimPortali.Models.Sorular", b =>
                 {
-                    b.HasOne("EgitimPortali.Models.DersIcerikleri", "DersIcerikleri")
-                        .WithMany()
-                        .HasForeignKey("DersIcerikleriID")
+                    b.HasOne("EgitimPortali.Models.Dersler", "Dersler")
+                        .WithMany("Sorulars")
+                        .HasForeignKey("DerslerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DersIcerikleri");
+                    b.Navigation("Dersler");
                 });
 
             modelBuilder.Entity("EgitimPortali.Models.SorularinCevaplari", b =>
@@ -641,6 +658,8 @@ namespace EgitimPortali.Migrations
             modelBuilder.Entity("EgitimPortali.Models.Dersler", b =>
                 {
                     b.Navigation("Konulars");
+
+                    b.Navigation("Sorulars");
                 });
 
             modelBuilder.Entity("EgitimPortali.Models.Kategoriler", b =>

@@ -20,6 +20,24 @@ namespace EgitimPortali.Controllers
             _dersicerikleriRepository = dersicerikleriRepository;
             _mapper = mapper;
         }
+        [HttpGet("konular/{icerikid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
+        public IActionResult DersIcerikleriniListele(int icerikid)
+        {
+            var deger = _dersicerikleriRepository.DersIcerikleriniListele(icerikid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
+        [HttpGet("son3ders/{icerikid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
+        public IActionResult Son3Ders(int icerikid)
+        {
+            var deger = _dersicerikleriRepository.Son3Ders(icerikid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<DersIcerikleri>))]
         public IActionResult DersListele()
@@ -30,20 +48,12 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult DersEkle(DersIcerikleriDto dersicerikleriCreate)
+        public IActionResult DersEkle(DersIcerikleriPostRequest dersicerikleriCreate)
         {
             if (dersicerikleriCreate == null)
                 return BadRequest(ModelState);
 
-            var category = _dersicerikleriRepository.DersIcerikleriniListele()
-                .Where(x => x.Name.Trim().ToUpper() == dersicerikleriCreate.Name.TrimEnd().ToUpper())
-                .FirstOrDefault();
-
-            if (category != null)
-            {
-                ModelState.AddModelError("", "Category already exists");
-                return StatusCode(422, ModelState);
-            }
+         
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -62,7 +72,7 @@ namespace EgitimPortali.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DersGuncelle(int derslericerikleriId, [FromBody] DersIcerikleriUpdateRequest updatedDersicerikleri)
+        public IActionResult DersGuncelle(int derslericerikleriId, [FromBody] DersIcerikleriDto updatedDersicerikleri)
         {
             if (_dersicerikleriRepository.DersIcerikleriGuncelle(derslericerikleriId, updatedDersicerikleri))
             {

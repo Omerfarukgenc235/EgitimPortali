@@ -5,6 +5,7 @@ namespace EgitimPortali.Repository.Soru
     public interface ISoruRepository
     {
         ICollection<Sorular> SorulariListele();
+        ICollection<Sorular> DerslereGoreSoruListeleme(int dersid);
         Sorular SoruGetir(int id);
         bool SoruKontrol(int id);
         bool SoruEkle(Sorular sorular);

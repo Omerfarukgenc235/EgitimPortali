@@ -16,7 +16,6 @@ namespace EgitimPortali.Repository.Konu
             _context = context;
             _mapper = mapper;
         }
-
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);
@@ -56,6 +55,7 @@ namespace EgitimPortali.Repository.Konu
             }
 
             if (konular.Name != null) cases.Name = konular.Name;
+            if (konular.Resim != null) cases.Resim = konular.Resim;
             if (konular.DerslerID != null) cases.DerslerID = (int)konular.DerslerID;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, konular);
@@ -69,7 +69,13 @@ namespace EgitimPortali.Repository.Konu
 
         public ICollection<Konular> KonulariListele()
         {
-            return _context.Konulars.ToList();
+
+            return _context.Konulars.Include(x=>x.Dersler).ToList();
+        }
+
+        public ICollection<Konular> KonulariListele(int dersid)
+        {
+            return _context.Konulars.Where(x => x.DerslerID == dersid).ToList();
         }
 
         public bool KonuSil(Konular konular)

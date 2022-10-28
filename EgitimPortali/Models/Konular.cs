@@ -7,6 +7,7 @@ namespace EgitimPortali.Models
         public int DerslerID { get; set; }
         public Dersler Dersler { get; set; }
         public string Name { get; set; }
+        public string? Resim { get; set; }
         public ICollection<DersIcerikleri> DersIcerikleris { get; set; }
 
     }

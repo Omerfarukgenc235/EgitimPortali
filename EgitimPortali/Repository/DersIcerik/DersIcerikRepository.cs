@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EgitimPortali.Context;
+using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Request.DersIcerikleri;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace EgitimPortali.Repository.DersIcerik
             return _context.DersIcerikleris.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public bool DersIcerikleriGuncelle(int Id, DersIcerikleriUpdateRequest dersIcerikleri)
+        public bool DersIcerikleriGuncelle(int Id, DersIcerikleriDto dersIcerikleri)
         {
             if (dersIcerikleri == null)
             {
@@ -51,6 +52,9 @@ namespace EgitimPortali.Repository.DersIcerik
 
             if (dersIcerikleri.KonularID != null) cases.KonularID = (int)dersIcerikleri.KonularID;
             if (dersIcerikleri.Name != null) cases.Name = dersIcerikleri.Name;
+            if (dersIcerikleri.Resim != null) cases.Resim = dersIcerikleri.Resim;
+            if (dersIcerikleri.PdfYolu != null) cases.PdfYolu = dersIcerikleri.PdfYolu;
+            if (dersIcerikleri.Icerik != null) cases.Icerik = dersIcerikleri.Icerik;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, dersIcerikleri);
             return Kaydet();
@@ -66,6 +70,11 @@ namespace EgitimPortali.Repository.DersIcerik
             return _context.DersIcerikleris.ToList(); 
         }
 
+        public ICollection<DersIcerikleri> DersIcerikleriniListele(int dersiceriklerid)
+        {
+            return _context.DersIcerikleris.Where(x => x.KonularID == dersiceriklerid).ToList();
+        }
+
         public bool DersIcerikleriSil(DersIcerikleri dersIcerikleri)
         {
             _context.DersIcerikleris.Remove(dersIcerikleri);
@@ -75,6 +84,11 @@ namespace EgitimPortali.Repository.DersIcerik
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);
+        }
+
+        public ICollection<DersIcerikleri> Son3Ders(int dersiceriklerid)
+        {
+            return _context.DersIcerikleris.Where(x => x.KonularID == dersiceriklerid).Take(3).ToList();
         }
     }
 }

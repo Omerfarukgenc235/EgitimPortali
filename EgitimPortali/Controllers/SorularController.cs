@@ -2,6 +2,7 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Soru;
+using EgitimPortali.Request.Sorular;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace EgitimPortali.Controllers
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Sorular>))]
 
-        public IActionResult KonuListele()
+        public IActionResult SoruListele()
         {
             var deger = _soruRepository.SorulariListele();
             if (!ModelState.IsValid)
@@ -30,7 +31,7 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KonuEkle(SorularDto sorularCreate)
+        public IActionResult SoruEkle(SorularPostRequest sorularCreate)
         {
             if (sorularCreate == null)
                 return BadRequest(ModelState);
@@ -77,7 +78,7 @@ namespace EgitimPortali.Controllers
         [HttpGet("{soruId}")]
         [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KonuGetir(int soruId)
+        public IActionResult SoruGetir(int soruId)
         {
             if (!_soruRepository.SoruKontrol(soruId))
                 return NotFound();
@@ -85,6 +86,15 @@ namespace EgitimPortali.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);
+        }
+        [HttpGet("dersleregore/{dersid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SorularinCevaplari>))]
+        public IActionResult IcerikYorumlariniListele(int dersid)
+        {
+            var deger = _soruRepository.DerslereGoreSoruListeleme(dersid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
         }
     }
 }

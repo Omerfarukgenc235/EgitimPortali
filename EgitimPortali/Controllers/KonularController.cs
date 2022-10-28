@@ -20,9 +20,9 @@ namespace EgitimPortali.Controllers
             _konularRepository = konularRepository;
             _mapper = mapper;
         }
+     
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
-
         public IActionResult KonuListele()
         {
             var deger = _konularRepository.KonulariListele();
@@ -30,8 +30,17 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+        [HttpGet("konular/{dersid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
+        public IActionResult KonuListele(int dersid)
+        {
+            var deger = _konularRepository.KonulariListele(dersid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
         [HttpPost]
-        public IActionResult KonuEkle(KonularDto konuCreate)
+        public IActionResult KonuEkle(KonularPostRequest konuCreate)
         {
             if (konuCreate == null)
                 return BadRequest(ModelState);

@@ -6,6 +6,7 @@ namespace EgitimPortali.Repository.Konu
     public interface IKonularRepository
     {
         ICollection<Konular> KonulariListele();
+        ICollection<Konular> KonulariListele(int dersid);
         Konular KonuGetir(int id);
         bool KonuKontrol(int id);
         bool KonuEkle(Konular konular);

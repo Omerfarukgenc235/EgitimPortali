@@ -6,6 +6,9 @@ namespace EgitimPortali.Models
     {
 
         public string Name { get; set; }
+        public string Icerik { get; set; }
+        public string? Resim { get; set; }
+        public string? PdfYolu { get; set; }
         public ICollection<Yorumlar> Yorumlar { get; set; }
         public int KonularID { get; set; }
         public Konular Konular { get; set; }

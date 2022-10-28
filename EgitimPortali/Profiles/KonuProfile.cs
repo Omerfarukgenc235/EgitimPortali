@@ -11,6 +11,7 @@ namespace EgitimPortali.Profiles
         {
             CreateMap<Konular, KonularDto>();
             CreateMap<KonularDto, Konular>();  
+            CreateMap<KonularPostRequest, Konular>();  
             CreateMap<Konular, KonularUpdateRequest>();
         }
     }

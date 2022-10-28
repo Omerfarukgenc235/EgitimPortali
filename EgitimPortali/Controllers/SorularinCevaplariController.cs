@@ -86,5 +86,15 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
+        [HttpGet("cevaplar/{soruid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SorularinCevaplari>))]
+        public IActionResult IcerikYorumlariniListele(int soruid)
+        {
+            var deger = _soruCevapRepository.CevaplariSoralaraGoreGetir(soruid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
+
     }
 }

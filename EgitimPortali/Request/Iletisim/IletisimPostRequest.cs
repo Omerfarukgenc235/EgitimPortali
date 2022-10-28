@@ -6,5 +6,7 @@
         public String Soyad { get; set; }
         public String Mail { get; set; }
         public String Mesaj { get; set; }
+        public String Konu { get; set; }
+
     }
 }

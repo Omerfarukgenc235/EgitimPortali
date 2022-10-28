@@ -7,6 +7,7 @@ namespace EgitimPortali.Repository.Ders
     {
         ICollection<Dersler> DersleriListele();
         Dersler DersGetir(int id);
+        string KategoriAdi(int id);
         bool DersKontrol(int id);
         bool DersEkle(Dersler dersler);
         bool DersGuncelle(int Id, DerslerUpdateRequest dersler);
