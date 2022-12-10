@@ -3,11 +3,14 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Ders;
 using EgitimPortali.Request.Dersler;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class DerslerController : ControllerBase

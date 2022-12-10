@@ -3,6 +3,7 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Kullanici;
 using EgitimPortali.Request.Kullanicilar;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +31,9 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+
         [HttpPost]
-        public IActionResult KonuEkle(KullanicilarPostRequest kullaniciCreate)
+        public IActionResult KullaniciEkle(KullanicilarPostRequest kullaniciCreate)
         {
             if (kullaniciCreate == null)
                 return BadRequest(ModelState);
@@ -75,14 +77,14 @@ namespace EgitimPortali.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KonuSil(int kullaniciId)
+        public IActionResult KullaniciSil(int kullaniciId)
         {
             if (!_kullaniciRepository.KullaniciKontrol(kullaniciId))
             {
                 return NotFound();
             }
 
-            var categoryToDelete = _kullaniciRepository.KullaniciGetir(kullaniciId);
+            var categoryToDelete = _mapper.Map<Kullanicilar>(_kullaniciRepository.KullaniciGetir(kullaniciId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -98,11 +100,21 @@ namespace EgitimPortali.Controllers
         [HttpGet("{kullaniciId}")]
         [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KonuGetir(int kullaniciId)
+        public IActionResult KullaniciGetir(int kullaniciId)
         {
             if (!_kullaniciRepository.KullaniciKontrol(kullaniciId))
                 return NotFound();
             var kategori = _mapper.Map<KullaniciDto>(_kullaniciRepository.KullaniciGetir(kullaniciId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(kategori);
+        }
+        [Authorize]
+        [HttpGet("oturum")]
+        [ProducesResponseType(400)]
+        public IActionResult OturumKullaniciGetir()
+        {  
+            var kategori = _kullaniciRepository.OturumGetir();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);

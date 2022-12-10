@@ -3,6 +3,7 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Anasayfa;
 using EgitimPortali.Request.AnaSayfa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+  
         [HttpPost]
         public IActionResult KonuEkle(AnasayfaDto anasayfaCreate)
         {

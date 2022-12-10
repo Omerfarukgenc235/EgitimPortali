@@ -1,0 +1,35 @@
+﻿@using EgitimPortali.DTO
+@model List<KullaniciRolDto>
+@{
+    ViewData["Title"] = "KullanicininYetkileri";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<a href="/Kullanici/KullaniciYetkilendirme/@ViewBag.id" class="btn btn-primary" style="float: right;">Yeni Yetki Ekle</a>
+<br />
+<br />
+<div class="ibox ">
+    <div class="ibox-title">
+        <h5>Kullanıcı Yetkilendirme Sayfası</h5>
+        <div class="ibox-tools">
+        </div>
+    </div>
+    <div class="ibox-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><center>Yetki Adı</center></th>
+                    <th><center>Yetkiyi Sil</center></th>
+                </tr>
+            </thead>
+            @foreach (var x in Model)
+            {
+                <tr>
+
+                    <td><center>@x.Roller.Name</center></td>
+                    <td><center><a href="/Kullanici/KullaniciYetkiSil/@x.Id" class="btn btn-danger">Sil</a></center></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

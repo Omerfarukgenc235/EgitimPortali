@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EgitimPortali.Context;
+using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Request.KullanicilarinRolleri;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,13 @@ namespace EgitimPortali.Repository.KullaniciRol
             _context = context;
             _mapper = mapper;
         }
+
+        public IEnumerable<string> GetRoleByUserId(int userId)
+        {
+            var userRole = _context.KullanicilarinRolleris.Include(x => x.Roller).Where(x => x.KullaniciID == userId).Select(x => x.Roller.Name).ToList();
+            return userRole;
+        }
+
         public bool Kaydet()
         {
             return (_context.SaveChanges() >= 0);
@@ -57,11 +65,15 @@ namespace EgitimPortali.Repository.KullaniciRol
             return Kaydet();
         }
 
-        public bool KullanicilarinRolKontrol(int id)
+        public bool KullanicilarinRolKontrol(KullanicilarinRolleriPostRequest p)
         {
-            return _context.KullanicilarinRolleris.Any(x=>x.Id == id);
+            var deger = _context.KullanicilarinRolleris.Where(x => x.KullaniciID == p.KullaniciID && x.RolID == p.RolID).FirstOrDefault();
+            if (deger != null)
+                return false;
+            else
+                return true;
         }
-
+        
         public KullanicilarinRolleri KullanicilarinRolleriGetir(int id)
         {
             return _context.KullanicilarinRolleris.Where(x => x.Id == id).FirstOrDefault();
@@ -72,10 +84,15 @@ namespace EgitimPortali.Repository.KullaniciRol
             return _context.KullanicilarinRolleris.ToList();
         }
 
-        public bool KullanicilarinRolSil(KullanicilarinRolleri kullanicilarinRolleri)
+        public bool KullanicilarinRolSil(KullanicilarinRolleri p)
         {
-            _context.KullanicilarinRolleris.Remove(kullanicilarinRolleri);
+            _context.KullanicilarinRolleris.Remove(p);
             return Kaydet();
+        }
+
+        public ICollection<KullaniciRolDto> KullanicininRolleri(int id)
+        {
+            return _mapper.Map<List<KullaniciRolDto>>(_context.KullanicilarinRolleris.Include(x=>x.Roller).Where(x => x.KullaniciID == id).ToList());
         }
     }
 }

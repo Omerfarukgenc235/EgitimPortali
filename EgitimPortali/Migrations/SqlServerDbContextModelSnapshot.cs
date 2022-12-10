@@ -329,6 +329,10 @@ namespace EgitimPortali.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Sifre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -336,6 +340,12 @@ namespace EgitimPortali.Migrations
                     b.Property<string>("Soyad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TokenCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -347,11 +357,11 @@ namespace EgitimPortali.Migrations
 
             modelBuilder.Entity("EgitimPortali.Models.KullanicilarinRolleri", b =>
                 {
-                    b.Property<int>("KullaniciID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("RolID")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -365,13 +375,18 @@ namespace EgitimPortali.Migrations
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("KullaniciID", "RolID");
+                    b.Property<int>("KullaniciID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KullaniciID");
 
                     b.HasIndex("RolID");
 
@@ -528,6 +543,144 @@ namespace EgitimPortali.Migrations
                     b.ToTable("SorularinCevaplaris");
                 });
 
+            modelBuilder.Entity("EgitimPortali.Models.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KonularID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KonularID");
+
+                    b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.TestCevap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CevapId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TestSoruId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.HasIndex("TestSoruId");
+
+                    b.ToTable("TestCevaps");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.TestSoru", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CevapA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CevapB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CevapC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CevapD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CevapE")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DogruCevap")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Soru")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestSorus");
+                });
+
             modelBuilder.Entity("EgitimPortali.Models.Yorumlar", b =>
                 {
                     b.Property<int>("Id")
@@ -639,6 +792,45 @@ namespace EgitimPortali.Migrations
                     b.Navigation("Sorular");
                 });
 
+            modelBuilder.Entity("EgitimPortali.Models.Test", b =>
+                {
+                    b.HasOne("EgitimPortali.Models.Konular", "Konular")
+                        .WithMany()
+                        .HasForeignKey("KonularID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Konular");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.TestCevap", b =>
+                {
+                    b.HasOne("EgitimPortali.Models.Test", "Test")
+                        .WithMany("TestinCevaplari")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EgitimPortali.Models.TestSoru", "TestSoru")
+                        .WithMany("TestinCevaplari")
+                        .HasForeignKey("TestSoruId");
+
+                    b.Navigation("Test");
+
+                    b.Navigation("TestSoru");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.TestSoru", b =>
+                {
+                    b.HasOne("EgitimPortali.Models.Test", "Test")
+                        .WithMany("TestSorulari")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+                });
+
             modelBuilder.Entity("EgitimPortali.Models.Yorumlar", b =>
                 {
                     b.HasOne("EgitimPortali.Models.DersIcerikleri", "DersIcerikleri")
@@ -685,6 +877,18 @@ namespace EgitimPortali.Migrations
             modelBuilder.Entity("EgitimPortali.Models.Sorular", b =>
                 {
                     b.Navigation("SorularinCevaplari");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.Test", b =>
+                {
+                    b.Navigation("TestSorulari");
+
+                    b.Navigation("TestinCevaplari");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.TestSoru", b =>
+                {
+                    b.Navigation("TestinCevaplari");
                 });
 #pragma warning restore 612, 618
         }

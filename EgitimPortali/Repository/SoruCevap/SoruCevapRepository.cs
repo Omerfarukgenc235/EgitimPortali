@@ -1,17 +1,29 @@
 ﻿using EgitimPortali.Context;
 using EgitimPortali.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EgitimPortali.Repository.SoruCevap
 {
     public class SoruCevapRepository : ISoruCevapRepository
     {
         private readonly SqlServerDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SoruCevapRepository(SqlServerDbContext context)
+        public SoruCevapRepository(SqlServerDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
-
+        public int GetMyName()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return Convert.ToInt16(result);
+        }
         public ICollection<SorularinCevaplari> CevaplariSoralaraGoreGetir(int id)
         {
             return _context.SorularinCevaplaris.Where(x => x.SorularID == id).ToList();
@@ -21,6 +33,7 @@ namespace EgitimPortali.Repository.SoruCevap
         {
             return (_context.SaveChanges() >= 0);
         }
+
 
         public bool SorularinCevaplariEkle(SorularinCevaplari sorularinCevaplari)
         {
@@ -53,6 +66,11 @@ namespace EgitimPortali.Repository.SoruCevap
         {
             _context.SorularinCevaplaris.Remove(sorularinCevaplari);
             return Kaydet();
+        }
+
+        public ICollection<SorularinCevaplari> KullaniciCevaplariSorularaGoreGetir(int id)
+        {
+            return _context.SorularinCevaplaris.Where(x => x.SorularID == id ).ToList();
         }
     }
 }

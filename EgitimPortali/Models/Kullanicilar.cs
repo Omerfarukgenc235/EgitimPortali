@@ -9,6 +9,8 @@ namespace EgitimPortali.Models
         public string Ad { get; set; }
         public string Soyad { get; set; }
         public ICollection<KullanicilarinRolleri> KullanicilarinRolleris { get; set; }
-
+        public string RefreshToken { get; set; } = string.Empty;
+        public DateTime TokenCreated { get; set; }
+        public DateTime TokenExpires { get; set; }
     }
 }

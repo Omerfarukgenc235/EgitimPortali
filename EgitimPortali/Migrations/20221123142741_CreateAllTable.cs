@@ -97,6 +97,9 @@ namespace EgitimPortali.Migrations
                     Sifre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Soyad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TokenExpires = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -175,9 +178,10 @@ namespace EgitimPortali.Migrations
                 name: "KullanicilarinRolleris",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RolID = table.Column<int>(type: "int", nullable: false),
                     KullaniciID = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -186,7 +190,7 @@ namespace EgitimPortali.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KullanicilarinRolleris", x => new { x.KullaniciID, x.RolID });
+                    table.PrimaryKey("PK_KullanicilarinRolleris", x => x.Id);
                     table.ForeignKey(
                         name: "FK_KullanicilarinRolleris_Kullanicilars_KullaniciID",
                         column: x => x.KullaniciID,
@@ -282,6 +286,31 @@ namespace EgitimPortali.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KonularID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tests_Konulars_KonularID",
+                        column: x => x.KonularID,
+                        principalTable: "Konulars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SorularinCevaplaris",
                 columns: table => new
                 {
@@ -331,6 +360,68 @@ namespace EgitimPortali.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TestSorus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TestId = table.Column<int>(type: "int", nullable: false),
+                    Soru = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CevapA = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CevapB = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CevapC = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CevapD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CevapE = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DogruCevap = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestSorus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestSorus_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestCevaps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TestId = table.Column<int>(type: "int", nullable: false),
+                    TestSoruId = table.Column<int>(type: "int", nullable: true),
+                    CevapId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestCevaps", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestCevaps_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestCevaps_TestSorus_TestSoruId",
+                        column: x => x.TestSoruId,
+                        principalTable: "TestSorus",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_DersIcerikleris_KonularID",
                 table: "DersIcerikleris",
@@ -345,6 +436,11 @@ namespace EgitimPortali.Migrations
                 name: "IX_Konulars_DerslerID",
                 table: "Konulars",
                 column: "DerslerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_KullanicilarinRolleris_KullaniciID",
+                table: "KullanicilarinRolleris",
+                column: "KullaniciID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KullanicilarinRolleris_RolID",
@@ -366,6 +462,26 @@ namespace EgitimPortali.Migrations
                 name: "IX_Sorulars_DerslerID",
                 table: "Sorulars",
                 column: "DerslerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestCevaps_TestId",
+                table: "TestCevaps",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestCevaps_TestSoruId",
+                table: "TestCevaps",
+                column: "TestSoruId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tests_KonularID",
+                table: "Tests",
+                column: "KonularID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestSorus_TestId",
+                table: "TestSorus",
+                column: "TestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Yorumlars_DersIcerikleriID",
@@ -394,6 +510,9 @@ namespace EgitimPortali.Migrations
                 name: "SorularinCevaplaris");
 
             migrationBuilder.DropTable(
+                name: "TestCevaps");
+
+            migrationBuilder.DropTable(
                 name: "Yorumlars");
 
             migrationBuilder.DropTable(
@@ -406,7 +525,13 @@ namespace EgitimPortali.Migrations
                 name: "Sorulars");
 
             migrationBuilder.DropTable(
+                name: "TestSorus");
+
+            migrationBuilder.DropTable(
                 name: "DersIcerikleris");
+
+            migrationBuilder.DropTable(
+                name: "Tests");
 
             migrationBuilder.DropTable(
                 name: "Konulars");

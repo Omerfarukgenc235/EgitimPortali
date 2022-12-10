@@ -3,11 +3,13 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Yorum;
 using EgitimPortali.Request.Yorumlar;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class YorumlarController : ControllerBase
@@ -30,17 +32,18 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
-        
-        [HttpGet("DerslereGoreYorumListeleme")]
+        [Authorize]
+        [HttpGet("KullaniciyaGore")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Yorumlar>))]
 
-        public IActionResult DerslereGoreYorumListeleme()
+        public IActionResult KullaniciyaGoreYorumlariListele()
         {
-            var deger = _yorumRepository.DerslereGoreYorumListele();
+            var deger = _yorumRepository.KullaniciyaGoreYorumlariListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult YorumEkle(YorumlarPostRequest yorumlarCreate)
         {
@@ -62,7 +65,7 @@ namespace EgitimPortali.Controllers
 
             return Ok("Successfuly created");
         }
-      
+        [Authorize]
         [HttpDelete("{yorumId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

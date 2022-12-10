@@ -1,5 +1,4 @@
-﻿@using EgitimPortali.DTO
-@model List<DersIcerikleriDto>
+﻿@model KonuIcerikleris
 @{
     ViewData["Title"] = "DersIcerikleri";
     Layout = "~/Views/Shared/_AnasayfaLayout.cshtml";
@@ -43,7 +42,7 @@
                 <div class="col-lg-8 w3l-blog-block-5">
                     <br />
                     <div class="row">
-                        @foreach (var x in Model)
+                        @foreach (var x in Model.dersIcerikleriDtos)
                         {
                             <div class="col-md-6">
                                 <div class="blog-card-single">
@@ -68,7 +67,31 @@
                                 <br>
                             </div>
                         }
+                        @foreach (var x in Model.Tests)
+                        {
+                            <div class="col-md-6">
+                                <div class="blog-card-single">
+                                    <div class="grids5-info">
+                                        <a href="/MerkezeTeget/Ders/@x.Id">
+                                            <img src="https://im.haberturk.com/2022/06/17/ver1655502597/3470624_810x458.jpg" style="height:200px;" alt="">
+                                        </a>
+                                        <div class="blog-info">
+                                            <h4><a href="/MerkezeTeget/Test/@x.Id">@x.Name</a></h4>
 
+                                            <div class="d-flex align-items-center justify-content-between mt-4">
+                                                <a class="d-flex align-items-center" href="#blog" title="23k followers">
+                                                    <img class="img-fluid" src="https://yt3.ggpht.com/YpH8jDBuSc0TPhpNmOgV57v3ikZg-_BT8TKFYkdsODIK7BV4f0Ir2eCK5LJMoi-LVg_12fjp_A=s900-c-k-c0x00ffffff-no-rj" alt="admin" style="max-width:40px"> <span class="small ms-2">Merkeze Teğet</span>
+                                                </a>
+                                                <p class="date-text">
+                                                    <i class="far fa-calendar-alt me-1"></i>@x.CreatedAt
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        }
                     </div>
                     <!-- pagination -->
                     <div class="pagination-style text-start mt-5">

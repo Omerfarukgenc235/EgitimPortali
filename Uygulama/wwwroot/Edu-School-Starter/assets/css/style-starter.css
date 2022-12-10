@@ -459,9 +459,7 @@ legend+* {
   direction: ltr;
 }
 */
-::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
+
 
 ::-webkit-color-swatch-wrapper {
   padding: 0;
@@ -2243,7 +2241,6 @@ progress {
 }
 
 .form-control {
-  display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
@@ -2253,9 +2250,7 @@ progress {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -2449,7 +2444,6 @@ textarea.form-control-lg {
 }
 
 .form-select {
-  display: block;
   width: 100%;
   padding: 0.375rem 2.25rem 0.375rem 0.75rem;
   font-size: 1rem;
@@ -2463,9 +2457,7 @@ textarea.form-control-lg {
   background-size: 16px 12px;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
 }
 
 .form-select:focus {
@@ -2504,7 +2496,6 @@ textarea.form-control-lg {
 }
 
 .form-check {
-  display: block;
   min-height: 1.5rem;
   padding-left: 1.5em;
   margin-bottom: 0.125rem;
@@ -2525,20 +2516,14 @@ textarea.form-control-lg {
   background-position: center;
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, 0.25);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
 }
 
-.form-check-input[type=checkbox] {
-  border-radius: 0.25em;
-}
 
-.form-check-input[type=radio] {
-  border-radius: 50%;
-}
+
+
 
 .form-check-input:active {
   filter: brightness(90%);
@@ -2555,19 +2540,9 @@ textarea.form-control-lg {
   border-color: #0d6efd;
 }
 
-.form-check-input:checked[type=checkbox] {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
-}
 
-.form-check-input:checked[type=radio] {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
-}
 
-.form-check-input[type=checkbox]:indeterminate {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
-}
+
 
 .form-check-input:disabled {
   pointer-events: none;
@@ -2631,9 +2606,7 @@ textarea.form-control-lg {
   height: 1.5rem;
   padding: 0;
   background-color: transparent;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+
 }
 
 .form-range:focus {
@@ -2661,8 +2634,7 @@ textarea.form-control-lg {
   border-radius: 1rem;
   -webkit-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -webkit-appearance: none;
-  appearance: none;
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2694,8 +2666,7 @@ textarea.form-control-lg {
   border-radius: 1rem;
   -moz-transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  -moz-appearance: none;
-  appearance: none;
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3873,9 +3844,6 @@ fieldset:disabled .btn {
   }
 }
 
-.fade:not(.show) {
-  opacity: 0;
-}
 
 .collapse:not(.show) {
   display: none;
@@ -6643,8 +6611,6 @@ fieldset:disabled .btn {
   float: left;
   width: 100%;
   margin-right: -100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
 
@@ -6928,7 +6894,6 @@ fieldset:disabled .btn {
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  visibility: hidden;
   background-color: #fff;
   background-clip: padding-box;
   outline: 0;
@@ -11861,7 +11826,7 @@ a:hover,
 button,
 button:hover {
   text-decoration: none;
-  transition: .5s all;
+  transition: .5s all;visibility
   -moz-transition: .5s all;
 }
 
@@ -11884,10 +11849,7 @@ input,
 select,
 label,
 li,
-span {
-  -webkit-appearance: none;
-  outline: none;
-}
+
 
 a,
 a:hover,
@@ -18281,7 +18243,6 @@ input:checked+.mode-container i.gg-moon {
   z-index: 1043;
   position: fixed;
   outline: none !important;
-  -webkit-backface-visibility: hidden;
 }
 
 .mfp-container {
@@ -18390,7 +18351,6 @@ button.mfp-arrow {
   overflow: visible;
   cursor: pointer;
   border: 0;
-  -webkit-appearance: none;
   display: block;
   outline: none;
   padding: 0;
@@ -19001,7 +18961,6 @@ header.nav-fixed {
   left: 0;
   right: 0;
   transition: opacity 0ms;
-  visibility: hidden;
   opacity: 0;
   z-index: 99;
   background: rgba(25, 23, 23, 0.81);

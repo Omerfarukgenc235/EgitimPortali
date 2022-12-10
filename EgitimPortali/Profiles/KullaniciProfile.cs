@@ -10,10 +10,15 @@ namespace EgitimPortali.Profiles
         public KullaniciProfile()
         {
             CreateMap<Kullanicilar, KullaniciDto>();
+            CreateMap<Kullanicilar, KullaniciReadDto>();
+            CreateMap<KullaniciReadDto, Kullanicilar>();
             CreateMap<KullaniciDto, Kullanicilar>();
             CreateMap<Kullanicilar, KullanicilarUpdateRequest>();
             CreateMap<Kullanicilar, KullanicilarPostRequest>();
             CreateMap<KullanicilarPostRequest, Kullanicilar>();
+            CreateMap<Kullanicilar, UserTokenReadDto>();
+            CreateMap<RefreshToken, Kullanicilar>();
+            CreateMap<Kullanicilar, RefreshToken>();
         }
     }
 }

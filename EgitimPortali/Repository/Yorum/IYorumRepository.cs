@@ -6,7 +6,7 @@ namespace EgitimPortali.Repository.Yorum
     public interface IYorumRepository
     {
         ICollection<Yorumlar> YorumlariListele();
-        ICollection<Yorumlar> DerslereGoreYorumListele();
+        ICollection<Yorumlar> KullaniciyaGoreYorumlariListele();
         ICollection<Yorumlar> IcerikYorumlariniListele(int icerikid);
         Yorumlar YorumGetir(int id);
         bool YorumKontrol(int id);

@@ -1,0 +1,72 @@
+﻿@using EgitimPortali.DTO
+@model List<YorumlarDto>
+@{
+    ViewData["Title"] = "DerseGelenYorumlar";
+    Layout = "~/Views/Shared/_OgretmenLayout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Yanıtlar</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+
+                        <div class="col-md-12">
+                            @using (Html.BeginForm("Index", "Yorumlar", FormMethod.Post))
+                            {
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="n" placeholder="Yorum ara...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="fa fa-search"></i>
+                                            Ara
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="table-responsive">
+                        @foreach (var x in Model)
+                        {
+                            <table class="table shoping-cart-table">
+                                <tbody>
+                                    <tr>
+                                        <td width="90">
+                                            <img src="@x.DersIcerikleri.Resim" style="max-width:100%;" />
+                                        </td>
+                                        <td class="desc">
+                                            <p class="small">
+                                                @x.Name
+                                            </p>
+                                            <div class="m-t-sm">
+
+                                                <a href="/Ogretmen/YorumKaldir/@x.Id" class="text-muted"><i class="fa fa-trash"></i> Yorumu Kaldır</a>
+                                            </div>
+                                        </td>
+                                        <td width="200">
+                                            <h4>
+                                                @(((DateTime)x.CreatedAt).ToString("dd-MMM-yyyy"))
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr />
+                        }
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    @*                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+                    *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

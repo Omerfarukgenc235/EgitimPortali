@@ -2,6 +2,8 @@
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.SoruCevap;
+using EgitimPortali.Request.SorularinCevaplari;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,7 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult KonuEkle(SoruCevapDto sorucevapCreate)
+        public IActionResult KonuEkle(SorularinCevaplariPostRequest sorucevapCreate)
         {
             if (sorucevapCreate == null)
                 return BadRequest(ModelState);
@@ -95,6 +97,15 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
-
+        [Authorize]
+        [HttpGet("kullanicicevaplar/{kullanicisoruid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SorularinCevaplari>))]
+        public IActionResult KullaniciIcerikYorumlariniListele(int kullanicisoruid)
+        {
+            var deger = _soruCevapRepository.KullaniciCevaplariSorularaGoreGetir(kullanicisoruid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
     }
 }

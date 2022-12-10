@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using EgitimPortali.Context;
+using EgitimPortali.DTO;
 using EgitimPortali.Models;
+using EgitimPortali.Request.Authenticate;
 using EgitimPortali.Request.Kullanicilar;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EgitimPortali.Repository.Kullanici
 {
@@ -10,11 +13,13 @@ namespace EgitimPortali.Repository.Kullanici
     {
         private readonly SqlServerDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public KullaniciRepository(SqlServerDbContext context, IMapper mapper)
+        public KullaniciRepository(SqlServerDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
         public bool Kaydet()
         {
@@ -27,9 +32,9 @@ namespace EgitimPortali.Repository.Kullanici
             return Kaydet();
         }
 
-        public Kullanicilar KullaniciGetir(int id)
+        public KullaniciReadDto KullaniciGetir(int id)
         {
-            return _context.Kullanicilars.Where(x => x.Id == id).FirstOrDefault();
+            return _mapper.Map<KullaniciReadDto>(_context.Kullanicilars.Where(x => x.Id == id).FirstOrDefault());
         }
 
         public bool KullaniciGuncelle(int Id,KullanicilarUpdateRequest kullanicilar)
@@ -57,7 +62,6 @@ namespace EgitimPortali.Repository.Kullanici
             if (kullanicilar.Ad != null) cases.Ad = kullanicilar.Ad;
             if (kullanicilar.Soyad != null) cases.Soyad = kullanicilar.Soyad;
             if (kullanicilar.Mail != null) cases.Mail = kullanicilar.Mail;
-            if (kullanicilar.Sifre != null) cases.Sifre = kullanicilar.Sifre;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, kullanicilar);
             return Kaydet();
@@ -77,6 +81,80 @@ namespace EgitimPortali.Repository.Kullanici
         {
             _context.Kullanicilars.Remove(kullanicilar);
             return Kaydet();
+        }
+
+        public int Login(AuthenticateRequest user)
+        {
+            var users = _context.Kullanicilars.SingleOrDefault(x => x.Mail == user.Mail);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(user.Sifre, users.Sifre))
+                return 0;
+
+            return users.Id;
+        }
+        public int GetMyName()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+
+            return Convert.ToInt16(result);
+        }
+
+        public bool Register(KullanicilarPostRequest userPostRequest)
+        {
+            if (userPostRequest == null)
+            {
+                throw new ArgumentNullException(nameof(userPostRequest));
+            }
+            userPostRequest.Sifre = BCrypt.Net.BCrypt.HashPassword(userPostRequest.Sifre);
+            Models.Kullanicilar user = _mapper.Map<Models.Kullanicilar>(userPostRequest);
+            _context.Kullanicilars.Add(user);
+            Kaydet();
+            return true;
+        }
+
+        public UserTokenReadDto GetByIdRefreshId(int Id)
+        {
+            return _mapper.Map<UserTokenReadDto>(_context.Kullanicilars.FirstOrDefault(u => u.Id == Id));
+        }
+
+        public bool TokenChange(RefreshToken token)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException(nameof(token));
+                return false;
+            }
+
+            if (token.Id == null)
+            {
+                throw new ArgumentNullException(nameof(token.Id));
+                return false;
+            }
+
+            Models.Kullanicilar user = _context.Kullanicilars.FirstOrDefault(u => u.Id == token.Id);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException(nameof(token.Id));
+                return false;
+            }
+
+            if (token.Token != null) user.RefreshToken = token.Token;
+            if (token.Created != null) user.TokenCreated = token.Created;
+            if (token.Expires != null) user.TokenExpires = token.Expires;
+            _context.Entry(user).State = EntityState.Modified;
+            Kaydet();
+            _mapper.Map(user, token);
+            return true;
+        }
+      
+        public KullaniciReadDto OturumGetir()
+        {
+            return _mapper.Map<KullaniciReadDto>(_context.Kullanicilars.Where(x => x.Id == GetMyName()).FirstOrDefault());
         }
     }
 }

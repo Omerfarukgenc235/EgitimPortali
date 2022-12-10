@@ -1,4 +1,6 @@
-﻿namespace EgitimPortali.DTO
+﻿using EgitimPortali.Models;
+
+namespace EgitimPortali.DTO
 {
     public class SorularDto
     {
@@ -7,5 +9,7 @@
         public string Name { get; set; }
         public string Icerik { get; set; }
         public DateTime CreatedAt { get; set; }
+        public Dersler Dersler { get; set; }
+
     }
 }

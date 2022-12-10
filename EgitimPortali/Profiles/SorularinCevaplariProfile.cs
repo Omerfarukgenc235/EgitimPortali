@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EgitimPortali.DTO;
 using EgitimPortali.Models;
+using EgitimPortali.Request.SorularinCevaplari;
 
 namespace EgitimPortali.Profiles
 {
@@ -9,6 +10,7 @@ namespace EgitimPortali.Profiles
         public SorularinCevaplariProfile()
         {
             CreateMap<SorularinCevaplari, SoruCevapDto>();
+            CreateMap<SorularinCevaplariPostRequest, SorularinCevaplari>();
             CreateMap<SoruCevapDto, SorularinCevaplari>();
         }
     }

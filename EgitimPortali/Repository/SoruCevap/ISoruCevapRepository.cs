@@ -6,6 +6,7 @@ namespace EgitimPortali.Repository.SoruCevap
     {
         ICollection<SorularinCevaplari> SorularinCevaplariListele();
         ICollection<SorularinCevaplari> CevaplariSoralaraGoreGetir(int id);
+        ICollection<SorularinCevaplari> KullaniciCevaplariSorularaGoreGetir(int id);
         SorularinCevaplari SorularinCevaplariGetir(int id);
         bool SorularinCevaplariKontrol(int id);
         bool SorularinCevaplariEkle(SorularinCevaplari sorularinCevaplari);

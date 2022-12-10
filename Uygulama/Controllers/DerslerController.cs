@@ -1,8 +1,10 @@
 ﻿using EgitimPortali.DTO;
 using EgitimPortali.Request.Dersler;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Uygulama.Controllers
@@ -12,15 +14,24 @@ namespace Uygulama.Controllers
         public async Task<IActionResult> DersleriListele()
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/Dersler");
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<DerslerDto>>(jsonString);
-            return View(values);
+            if (values != null)
+                return View(values);
+            else
+                return RedirectToAction("GirisYap", "Login");
         }
         [HttpGet]
         public async Task<IActionResult> DersEkle()
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var responseMessage2 = await httpClient.GetAsync("https://localhost:7179/api/Kategori");
             var jsonString = await responseMessage2.Content.ReadAsStringAsync();
             var values2 = JsonConvert.DeserializeObject<List<KategoriDto>>(jsonString);
@@ -38,6 +49,9 @@ namespace Uygulama.Controllers
         public async Task<IActionResult> DersEkle(DerslerDto p)
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var responseMessage2 = await httpClient.GetAsync("https://localhost:7179/api/Kategori");
             var jsonString = await responseMessage2.Content.ReadAsStringAsync();
             var values2 = JsonConvert.DeserializeObject<List<KategoriDto>>(jsonString);
@@ -63,12 +77,18 @@ namespace Uygulama.Controllers
         public async Task<IActionResult> DersGuncelle(int id)
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/Dersler/" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonEmployee = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<DerslerDto>(jsonEmployee);
-                return View(values);
+                if (values != null)
+                    return View(values);
+                else
+                    return RedirectToAction("GirisYap", "Login");
             }
             return RedirectToAction("DersleriListele");
 
@@ -77,6 +97,9 @@ namespace Uygulama.Controllers
         public async Task<IActionResult> DersGuncelle(DerslerUpdateRequest p)
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var jsonEmployee = JsonConvert.SerializeObject(p);
             var content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
             var responseMessage = await httpClient.PutAsync("https://localhost:7179/api/Dersler/" + p.Id, content);
@@ -89,6 +112,9 @@ namespace Uygulama.Controllers
         public async Task<IActionResult> DersSil(int id)
         {
             var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
             var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/Dersler/" + id);
             if (responseMessage.IsSuccessStatusCode)
             {

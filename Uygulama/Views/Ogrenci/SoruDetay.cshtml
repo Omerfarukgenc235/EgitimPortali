@@ -1,0 +1,51 @@
+﻿@model SoruDetaylari
+@{
+    ViewData["Title"] = "SoruDetay";
+    Layout = "~/Views/Shared/_OgrenciLayout.cshtml";
+}
+
+<h1>Soruya gelen yanıtlar</h1>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="social-feed-box">
+            
+                    <div class="social-avatar">
+                    <a href="/MerkezeTeget/SoruDetay/@Model.sorular.Id" class="float-left">
+                            <img alt="image" src="\edu-school-starter\assets\images\merkez.jpg" />
+                        </a>
+                        <div class="media-body">
+                            <a href="/MerkezeTeget/SoruDetay/@Model.sorular.Id">
+                                @Model.sorular.Name
+                            </a>
+                            <small class="text-muted">@Model.sorular.CreatedAt</small>
+                        </div>
+                    </div>
+                    <div class="social-body">
+                     @Html.Raw(Model.sorular.Icerik)
+                    </div>
+                
+                <div class="social-footer">
+                    @foreach (var x in Model.sorucevap)
+                    {
+                        <div class="social-comment">
+                            <a href="" class="float-left">
+                                <img alt="image" src="\edu-school-starter\assets\images\merkez.jpg" />
+                            </a>
+                            <div class="media-body">
+                                <a href="#">
+                                    MerkezeTeget
+                                </a>
+                                @Html.Raw(x.Icerik)
+                                <br />
+                                <small class="text-muted">12.06.2014</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

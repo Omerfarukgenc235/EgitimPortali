@@ -1,5 +1,5 @@
 ﻿@using EgitimPortali.DTO
-@model List<DerslerDto>
+@model List<KonularDto>
 @{
     ViewData["Title"] = "Konular";
     Layout = "~/Views/Shared/_OgretmenLayout.cshtml";
@@ -7,66 +7,61 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
-
-
     <link href="~/admin/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
-
-
 </head>
-
 <body>
-
     <div id="wrapper">
 
-
-
-
-        <a href="/Dersler/DersEkle/" class="btn btn-info">Yeni Ders Ekle</a>
-
         <div class="wrapper wrapper-content animated fadeInRight">
+
             <div class="row">
+
                 <div class="col-lg-12">
+
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>Ders Listesi</h5>
+                            <h5>Konu Listesi</h5>
                             <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-
-
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
+                                    <a href="/Ogretmen/DersinSorulari/@ViewBag.cv" class="btn btn-success"><i class="fa fa-question"></i> Dersin Soruları</a>
+                                    <a href="/Ogretmen/KonuEkle/@ViewBag.cv" class="btn btn-info"><i class="fa fa-plus"></i> Yeni Konu Ekle</a>
                             </div>
+                            <br />
+                            <br />
                         </div>
                         <div class="ibox-content">
-
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Dersin Adı</th>
+                                            <th>Konunun Görseli</th>
+                                            <th>Konunun Adı</th>
+                                            <th>Konu İçerikleri</th>
                                             <th>Dersi Düzenle</th>
                                             <th>Dersi Sil</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach (var x in Model)
                                         {
                                             <tr class="gradeA">
+                                                <td width="90">
+                                                    <center>
+                                                        <img src="@x.Resim" style="max-width:100%;" />
+                                                    </center>
+                                                </td>
                                                 <td>@x.Name</td>
-                                                <td><a href="/Dersler/DersGuncelle/@x.Id" class="btn btn-outline-success">Düzenle</a></td>
-                                                <td><a href="/Dersler/DersSil/@x.Id" class="btn btn-outline-danger">Sil</a></td>
+                                                <td><a href="/Ogretmen/KonuIcerikleri/@x.Id" class="btn btn-outline-info">Konu İçerikleri</a></td>
+                                                <td><a href="/Ogretmen/KonuGuncelle/@x.Id" class="btn btn-outline-success">Konuyu Düzenle</a></td>
+                                                <td><a href="/Ogretmen/KonuSil/@x.Id" class="btn btn-outline-danger">Konuyu Sil</a></td>
                                             </tr>
                                         }
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Dersin Adı</th>
+                                            <th>Konunun Görseli</th>
+                                            <th>Konunun Adı</th>
+                                            <th>Konu İçerikleri</th>
                                             <th>Dersi Düzenle</th>
                                             <th>Dersi Sil</th>
                                         </tr>

@@ -3,11 +3,13 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.KullaniciRol;
 using EgitimPortali.Request.KullanicilarinRolleri;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class KullanicilarinRolleriController : ControllerBase
@@ -30,13 +32,24 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+        [HttpGet("kullanicininRolleri/{kullaniciid}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<KullanicilarinRolleri>))]
+
+        public IActionResult KullanicininRolleri(int kullaniciid)
+        {
+            var deger = _kullanicirolRepository.KullanicininRolleri(kullaniciid);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
         [HttpPost]
-        public IActionResult KonuEkle(KullaniciRolDto kullanicirolCreate)
+        public IActionResult KullaniciyaRolEkle(KullanicilarinRolleriPostRequest kullanicirolCreate)
         {
             if (kullanicirolCreate == null)
-                return BadRequest(ModelState);
+                return BadRequest(ModelState);      
 
-          
+            if(!_kullanicirolRepository.KullanicilarinRolKontrol(kullanicirolCreate))
+                return BadRequest("Bu veri zaten mevcut");
 
 
             if (!ModelState.IsValid)
@@ -68,13 +81,9 @@ namespace EgitimPortali.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult KonuSil(int kullanicirolId)
+        public IActionResult YetkiSil (int kullanicirolId)
         {
-            if (!_kullanicirolRepository.KullanicilarinRolKontrol(kullanicirolId))
-            {
-                return NotFound();
-            }
-
+      
             var categoryToDelete = _kullanicirolRepository.KullanicilarinRolleriGetir(kullanicirolId);
 
             if (!ModelState.IsValid)
@@ -88,14 +97,13 @@ namespace EgitimPortali.Controllers
             return NoContent();
         }
 
-        [HttpGet("{kullanicirolId}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(Konular))]
         [ProducesResponseType(400)]
-        public IActionResult KonuGetir(int kullanicirolId)
+        public IActionResult KonuGetir(int id)
         {
-            if (!_kullanicirolRepository.KullanicilarinRolKontrol(kullanicirolId))
-                return NotFound();
-            var kategori = _mapper.Map<KullaniciRolDto>(_kullanicirolRepository.KullanicilarinRolleriGetir(kullanicirolId));
+          
+            var kategori = _mapper.Map<KullaniciRolDto>(_kullanicirolRepository.KullanicilarinRolleriGetir(id));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);

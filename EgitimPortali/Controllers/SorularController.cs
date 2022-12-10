@@ -3,6 +3,7 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Soru;
 using EgitimPortali.Request.Sorular;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,17 @@ namespace EgitimPortali.Controllers
         public IActionResult SoruListele()
         {
             var deger = _soruRepository.SorulariListele();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(deger);
+        }
+        [Authorize]
+        [HttpGet("KullaniciyaGore")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Sorular>))]
+
+        public IActionResult KullaniciyaGoreSoruListele()
+        {
+            var deger = _soruRepository.kullaniciyaGoreSorulariListele();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(deger);
@@ -83,6 +95,20 @@ namespace EgitimPortali.Controllers
             if (!_soruRepository.SoruKontrol(soruId))
                 return NotFound();
             var kategori = _mapper.Map<SorularDto>(_soruRepository.SoruGetir(soruId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(kategori);
+        }
+        [Authorize]
+        [HttpGet("kullanici/{kullanicisoruId}")]
+
+        [ProducesResponseType(200, Type = typeof(Konular))]
+        [ProducesResponseType(400)]
+        public IActionResult KullaniciSoruGetir(int kullanicisoruId)
+        {
+            if (!_soruRepository.SoruKontrol(kullanicisoruId))
+                return NotFound();
+            var kategori = _mapper.Map<SorularDto>(_soruRepository.KullaniciSoruGetir(kullanicisoruId));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(kategori);

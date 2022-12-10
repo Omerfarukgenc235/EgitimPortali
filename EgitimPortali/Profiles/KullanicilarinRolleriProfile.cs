@@ -11,6 +11,7 @@ namespace EgitimPortali.Profiles
         {
             CreateMap<KullanicilarinRolleri, KullaniciRolDto>();
             CreateMap<KullaniciRolDto, KullanicilarinRolleri>();
+            CreateMap<KullanicilarinRolleriPostRequest, KullanicilarinRolleri>();
             CreateMap<KullanicilarinRolleri, KullanicilarinRolleriUpdateRequest>();
         }
     }

@@ -1,0 +1,41 @@
+﻿@using EgitimPortali.DTO
+@model List<KullaniciDto>
+@{
+    ViewData["Title"] = "ButunKullanicilar";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="wrapper">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                @foreach (var x in Model)
+                {
+                    <div class="col-lg-3">
+                        <div class="contact-box center-version">
+                            <a href="/Admin/Yazarlar/YazarDuzenle/@x.Id">
+                                <img alt="image" class="rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv15kLBXI8uMtilXDV36Kku5BH1pRMYyYxb-LR9Gnc3ED61ojTXRPqmM1B482vmShzDm4&usqp=CAU">
+                                <h3 class="m-b-xs"><strong>@x.Ad @x.Soyad</strong></h3>
+@*                                <div class="font-bold">@x.</div>
+*@                                <address class="m-t-md">
+                                    <strong>@x.Mail</strong><br>
+                                </address>
+                            </a>
+                            <div class="contact-box-footer">
+                                <div class="m-t-xs btn-group">
+                                    <a href="/Kullanici/KullanicininYetkileri/@x.Id" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Yetkilendir </a>
+                                    &nbsp;
+                                    <a href="/Kullanici/KullaniciSil/@x.Id" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Kullanıcıyı Sil</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

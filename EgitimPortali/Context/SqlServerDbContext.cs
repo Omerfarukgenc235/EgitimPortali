@@ -1,14 +1,43 @@
 ﻿using EgitimPortali.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EgitimPortali.Context
 {
     public class SqlServerDbContext : DbContext
     {
-
-        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SqlServerDbContext(DbContextOptions<SqlServerDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public int GetMyName()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return Convert.ToInt16(result);
+        }
+        public override int SaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            var deger = GetMyName();
+            foreach (var item in ChangeTracker.Entries().Where(e => e.State
+             == EntityState.Deleted))
+            {
+                item.State = EntityState.Modified;
+                item.CurrentValues["IsDeleted"] = true;
+                item.CurrentValues["DeletedAt"] = DateTime.Now;
+                item.CurrentValues["DeletedBy"] = deger;
+            }
+            foreach (var item in ChangeTracker.Entries().Where(e => e.State
+            == EntityState.Added))
+            {
+                item.CurrentValues["CreatedBy"] = deger;
+            }
+            return base.SaveChanges();
         }
         public DbSet<Kategoriler> Kategorilers { get; set; }
         public DbSet<AnaSayfa> AnaSayfas { get; set; }
@@ -24,6 +53,9 @@ namespace EgitimPortali.Context
         public DbSet<Sorular> Sorulars { get; set; }
         public DbSet<SorularinCevaplari> SorularinCevaplaris { get; set; }
         public DbSet<Yorumlar> Yorumlars { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<TestSoru> TestSorus { get; set; }
+        public DbSet<TestCevap> TestCevaps { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -33,16 +65,16 @@ namespace EgitimPortali.Context
                 .IsUnique();
             #endregion
 
-            modelBuilder.Entity<KullanicilarinRolleri>()
-               .HasKey(pc => new { pc.KullaniciID, pc.RolID });
-            modelBuilder.Entity<KullanicilarinRolleri>()
-                .HasOne(p => p.Roller)
-                .WithMany(pc => pc.KullanicilarinRolleris)
-                .HasForeignKey(p => p.RolID);
-            modelBuilder.Entity<KullanicilarinRolleri>()
-               .HasOne(p => p.Kullanicilar)
-               .WithMany(pc => pc.KullanicilarinRolleris)
-               .HasForeignKey(c => c.KullaniciID);
+            #region UserRoles
+
+
+            modelBuilder.Entity<KullanicilarinRolleri>().HasOne(ur => ur.Kullanicilar).WithMany(u => u.KullanicilarinRolleris)
+                .HasForeignKey(u => u.KullaniciID);
+
+            modelBuilder.Entity<KullanicilarinRolleri>().HasOne(ur => ur.Roller).WithMany(r => r.KullanicilarinRolleris)
+                .HasForeignKey(u => u.RolID);
+
+            #endregion
         }
     }
 }
