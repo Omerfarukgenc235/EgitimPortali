@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class DersIcerikleriController : ControllerBase

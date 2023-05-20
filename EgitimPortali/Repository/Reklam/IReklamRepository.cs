@@ -8,7 +8,7 @@ namespace EgitimPortali.Repository.Reklam
         ICollection<Reklamlar> ReklamlariListele();
         Reklamlar ReklamGetir(int id);
         bool ReklamKontrol(int id);
-        bool ReklamEkle(Reklamlar reklam);
+        bool ReklamEkle(ReklamlarPostRequest reklam);
         bool ReklamGuncelle(int Id,ReklamlarUpdateRequest reklam);
         bool ReklamSil(Reklamlar reklam);
         bool Kaydet();

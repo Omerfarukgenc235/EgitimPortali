@@ -1,5 +1,6 @@
 ﻿using EgitimPortali.DTO;
 using EgitimPortali.Request.Roller;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -7,6 +8,8 @@ using System.Text;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class RolController : Controller
     {
         public async Task<IActionResult> ButunRoller()

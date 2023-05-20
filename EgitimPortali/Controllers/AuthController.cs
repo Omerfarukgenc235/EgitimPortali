@@ -2,19 +2,15 @@
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Kullanici;
 using EgitimPortali.Repository.KullaniciRol;
-using EgitimPortali.Repository.Rol;
 using EgitimPortali.Request.Authenticate;
 using EgitimPortali.Request.Kullanicilar;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace EgitimPortali.Controllers
 {
@@ -33,9 +29,12 @@ namespace EgitimPortali.Controllers
             _userRoleRepository = userRoleRepository;
         }
 
+      
+
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(AuthenticateRequest request)
+        public async Task<ActionResult<GirisIcın>> Login(AuthenticateRequest request)
         {
+
             if (request is null)
             {
                 return BadRequest("Lütfen geçerli bir kullanıcı adı giriniz.");
@@ -43,15 +42,19 @@ namespace EgitimPortali.Controllers
 
             int login = _userRepository.Login(request);
             if (login != 0)
-            {
-                var deger = _userRepository.KullaniciGetir(login);
-                string token = CreateToken(deger);
+            { 
+                GirisIcın cs = new GirisIcın();
 
+                var deger = _userRepository.KullaniciGetir(login);
+                var roles = _userRoleRepository.GetRoleByUserId(deger.Id);
+                string token = CreateToken(deger);
                 var refreshToken = GenerateRefreshToken(login);
+                cs.jwt = token;
+                cs.roles = roles.ToList();
 
                 SetRefreshToken(refreshToken);
             
-                return Ok(token);
+                return Ok(cs);
             }
             else
             {
@@ -62,7 +65,13 @@ namespace EgitimPortali.Controllers
         [HttpPost("register")]
         public bool Register([FromBody] KullanicilarPostRequest userPostRequest)
         {
-            return _userRepository.Register(userPostRequest);
+            var deger = _userRepository.Register(userPostRequest);
+            if (deger != null)
+            {
+                _userRoleRepository.YeniRolEkle(deger.Id);
+                return true;
+            }
+            return false;
         }
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken(int id)
@@ -104,7 +113,6 @@ namespace EgitimPortali.Controllers
                 HttpOnly = true,
                 Expires = newRefreshToken.Expires
             };
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
 
             _userRepository.TokenChange(newRefreshToken);
 

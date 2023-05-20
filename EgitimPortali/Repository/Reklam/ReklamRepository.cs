@@ -21,10 +21,16 @@ namespace EgitimPortali.Repository.Reklam
             return (_context.SaveChanges() >= 0);
         }
 
-        public bool ReklamEkle(Reklamlar reklam)
+        public bool ReklamEkle(ReklamlarPostRequest reklam)
         {
-            _context.Reklamlars.Add(reklam);
-            return Kaydet();
+            if (reklam.Gorsel != null)
+            {
+                Models.Reklamlar media = _mapper.Map<Models.Reklamlar>(reklam);
+                _context.Reklamlars.Add(media);
+                return Kaydet();
+            }
+            else
+                return Kaydet();
         }
 
         public Reklamlar ReklamGetir(int id)
@@ -56,7 +62,6 @@ namespace EgitimPortali.Repository.Reklam
 
             if (reklam.Icerik != null) cases.Icerik = reklam.Icerik;
             if (reklam.UstBaslik != null) cases.UstBaslik = reklam.UstBaslik;
-            if (reklam.Gorsel != null) cases.Gorsel = reklam.Gorsel;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, reklam);
             return Kaydet();
@@ -64,7 +69,7 @@ namespace EgitimPortali.Repository.Reklam
 
         public bool ReklamKontrol(int id)
         {
-           return _context.Reklamlars.Any(x => x.Id == id);
+            return _context.Reklamlars.Any(x => x.Id == id);
         }
 
         public ICollection<Reklamlar> ReklamlariListele()

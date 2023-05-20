@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class KullaniciController : ControllerBase
@@ -84,12 +85,10 @@ namespace EgitimPortali.Controllers
                 return NotFound();
             }
 
-            var categoryToDelete = _mapper.Map<Kullanicilar>(_kullaniciRepository.KullaniciGetir(kullaniciId));
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_kullaniciRepository.KullaniciSil(categoryToDelete))
+            if (!_kullaniciRepository.KullaniciSil(kullaniciId))
             {
                 ModelState.AddModelError("", "Something went wrong deleting category");
             }

@@ -9,7 +9,7 @@
 @using (Html.BeginForm("YeniKonuEkle", "Konular", FormMethod.Post))
 {
     <select asp-for="DerslerID" class="form-control" asp-items="@(List<SelectListItem>)ViewBag.cv">
-         <option>Lütfen Konu Seçiniz</option>
+         <option>Lütfen Ders Seçiniz</option>
     </select>
  
     <br />

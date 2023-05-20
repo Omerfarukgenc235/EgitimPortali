@@ -9,6 +9,7 @@ namespace EgitimPortali.Repository.Testler
         ICollection<Test> KonuyaGoreTestListele(int id);
         Test TestGetir(int id);
         bool TestKontrol(int id);
+        bool KullaniciCozumKontrol(int id);
         bool TestEkle(TestPostRequest test);
         bool TestGuncelle(int id, TestUpdateRequest test);
         bool TestSil(Test test);

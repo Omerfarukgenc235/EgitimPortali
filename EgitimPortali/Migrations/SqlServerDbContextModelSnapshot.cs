@@ -142,6 +142,42 @@ namespace EgitimPortali.Migrations
                     b.ToTable("Derslers");
                 });
 
+            modelBuilder.Entity("EgitimPortali.Models.DersTakip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DersIcerikleriId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Durum")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DersIcerikleriId");
+
+                    b.ToTable("DersTakips");
+                });
+
             modelBuilder.Entity("EgitimPortali.Models.Hakkimizda", b =>
                 {
                     b.Property<int>("Id")
@@ -283,6 +319,9 @@ namespace EgitimPortali.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("KonuSirasi")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -526,6 +565,9 @@ namespace EgitimPortali.Migrations
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Dogruluk")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Icerik")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -664,12 +706,39 @@ namespace EgitimPortali.Migrations
                     b.Property<int>("DogruCevap")
                         .HasColumnType("int");
 
+                    b.Property<string>("GorselA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GorselB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GorselC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GorselD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GorselE")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Soru")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoruGorsel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoruSirasi")
+                        .HasColumnType("int");
 
                     b.Property<int>("TestId")
                         .HasColumnType("int");
@@ -738,6 +807,17 @@ namespace EgitimPortali.Migrations
                         .IsRequired();
 
                     b.Navigation("Kategoriler");
+                });
+
+            modelBuilder.Entity("EgitimPortali.Models.DersTakip", b =>
+                {
+                    b.HasOne("EgitimPortali.Models.DersIcerikleri", "DersIcerikleri")
+                        .WithMany("DersTakip")
+                        .HasForeignKey("DersIcerikleriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DersIcerikleri");
                 });
 
             modelBuilder.Entity("EgitimPortali.Models.Konular", b =>
@@ -844,6 +924,8 @@ namespace EgitimPortali.Migrations
 
             modelBuilder.Entity("EgitimPortali.Models.DersIcerikleri", b =>
                 {
+                    b.Navigation("DersTakip");
+
                     b.Navigation("Yorumlar");
                 });
 

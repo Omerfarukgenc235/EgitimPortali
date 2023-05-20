@@ -3,11 +3,13 @@ using EgitimPortali.DTO;
 using EgitimPortali.Models;
 using EgitimPortali.Repository.Reklam;
 using EgitimPortali.Request.Reklamlar;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ReklamlarController : ControllerBase
@@ -31,25 +33,21 @@ namespace EgitimPortali.Controllers
             return Ok(deger);
         }
         [HttpPost]
-        public IActionResult ReklamEkle(ReklamlarDto reklamCreate)
+        public IActionResult ReklamEkle([FromBody] ReklamlarPostRequest reklamCreate)
         {
             if (reklamCreate == null)
                 return BadRequest(ModelState);
 
-
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var categoryMap = _mapper.Map<Reklamlar>(reklamCreate);
-
-            if (!_reklamRepository.ReklamEkle(categoryMap))
+            if (!_reklamRepository.ReklamEkle(reklamCreate))
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
+                ModelState.AddModelError("", "Bir hata meydana geldi");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfuly created");
+            return Ok("Başarıyla Kaydedildi");
         }
         [HttpPut("{reklamId}")]
         [ProducesResponseType(400)]

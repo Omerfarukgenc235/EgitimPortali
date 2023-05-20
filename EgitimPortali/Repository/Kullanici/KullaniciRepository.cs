@@ -5,6 +5,7 @@ using EgitimPortali.Models;
 using EgitimPortali.Request.Authenticate;
 using EgitimPortali.Request.Kullanicilar;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 
 namespace EgitimPortali.Repository.Kullanici
@@ -77,9 +78,10 @@ namespace EgitimPortali.Repository.Kullanici
             return _context.Kullanicilars.ToList();
         }
 
-        public bool KullaniciSil(Kullanicilar kullanicilar)
+        public bool KullaniciSil(int id)
         {
-            _context.Kullanicilars.Remove(kullanicilar);
+            Models.Kullanicilar kullanici = _context.Kullanicilars.FirstOrDefault(u => u.Id == id);
+            _context.Kullanicilars.Remove(kullanici);
             return Kaydet();
         }
 
@@ -103,7 +105,7 @@ namespace EgitimPortali.Repository.Kullanici
             return Convert.ToInt16(result);
         }
 
-        public bool Register(KullanicilarPostRequest userPostRequest)
+        public KullaniciReadDto Register(KullanicilarPostRequest userPostRequest)
         {
             if (userPostRequest == null)
             {
@@ -113,7 +115,8 @@ namespace EgitimPortali.Repository.Kullanici
             Models.Kullanicilar user = _mapper.Map<Models.Kullanicilar>(userPostRequest);
             _context.Kullanicilars.Add(user);
             Kaydet();
-            return true;
+            return _mapper.Map<KullaniciReadDto>(user);
+
         }
 
         public UserTokenReadDto GetByIdRefreshId(int Id)

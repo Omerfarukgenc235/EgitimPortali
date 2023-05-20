@@ -4,15 +4,18 @@ using EgitimPortali.Request.DersIcerikleri;
 using EgitimPortali.Request.Konular;
 using EgitimPortali.Request.Test;
 using EgitimPortali.Request.TestSoru;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
 using Uygulama.Models;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Öğretmen,Admin")]
     public class OgretmenController : Controller
     {
         public async Task<IActionResult> Konular(int id)
@@ -20,7 +23,6 @@ namespace Uygulama.Controllers
             var httpClient = new HttpClient();
             var Token = Request.Cookies["tokenim"];
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
-
             var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/Konular/konular/" + id);
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<KonularDto>>(jsonString);
@@ -108,6 +110,21 @@ namespace Uygulama.Controllers
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<SoruCevapDto>>(jsonString);
             return View(values);
+        }
+        public async Task<IActionResult> YorumuOnayla(int id)
+        {
+
+            var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+            var jsonEmployee = JsonConvert.SerializeObject(id);
+            var content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
+            var responseMessage = await httpClient.PutAsync("https://localhost:7179/api/SorularinCevaplari/" + id, content);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("IzlenilenDersler");
+            }
+            return Json(id);
         }
         public async Task<IActionResult> YanitKaldir(int id)
         {
@@ -288,6 +305,19 @@ namespace Uygulama.Controllers
             }
             return View(p);
         }
+        public async Task<IActionResult> TestSil(int id)
+        {
+            var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/Test/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Test", new { id = id });
+            }
+            return View();
+        }
         
 
         public async Task<IActionResult> Test(int id)
@@ -309,17 +339,107 @@ namespace Uygulama.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> SoruEkle(TestSoruPostRequest p)
+        public async Task<IActionResult> SoruEkle(TestSoruPostRequest p, IFormFile? SoruGorsel,IFormFile? GorselA, IFormFile? GorselB, IFormFile? GorselC, IFormFile? GorselD, IFormFile? GorselE)
         {
             var httpClient = new HttpClient();
             var Token = Request.Cookies["tokenim"];
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
 
+            if (SoruGorsel != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(SoruGorsel.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.SoruGorsel = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    SoruGorsel.CopyTo(stream);
+                }
+            }
+            if (GorselA != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(GorselA.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.GorselA = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    GorselA.CopyTo(stream);
+                }
+            }
+            if (GorselB != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(GorselB.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.GorselB = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    GorselB.CopyTo(stream);
+                }
+            }
+            if (GorselC != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(GorselC.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.GorselC = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    GorselC.CopyTo(stream);
+                }
+            }
+            if (GorselD != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(GorselD.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.GorselD = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    GorselD.CopyTo(stream);
+                }
+            }
+            if (GorselE != null)
+            {
+                FileInfo dosyaBilgisi = new FileInfo(GorselE.FileName);
+                string dosyaAdi = dosyaBilgisi.Name.Substring(0, dosyaBilgisi.Name.Length - dosyaBilgisi.Extension.Length);
+                dosyaAdi += "-" + Guid.NewGuid().ToString().Replace("-", "") + dosyaBilgisi.Extension;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fileNameWithPath = Path.Combine(path, dosyaAdi);
+                p.GorselE = "/images/" + dosyaAdi;
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    GorselE.CopyTo(stream);
+                }
+            }
             var jsonEmployee = JsonConvert.SerializeObject(p);
             StringContent content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
             var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/TestSoru", content);
             if (responseMessage.IsSuccessStatusCode)
-            {
+            {     
                 return RedirectToAction("Test", new { id = p.TestId});
             }
             ViewBag.id = p.TestId;
@@ -364,6 +484,35 @@ namespace Uygulama.Controllers
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
 
             var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/TestSoru/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Test", new { id = id });
+            }
+            return View();
+        }
+
+        
+
+        public async Task<IActionResult> DersSorulariniSil(int id)
+        {
+            var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/Sorular/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Test", new { id = id });
+            }
+            return View();
+        }
+        public async Task<IActionResult> DersinSorusunaGelenYanitSil(int id)
+        {
+            var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
+
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/SorularinCevaplari/" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("Test", new { id = id });

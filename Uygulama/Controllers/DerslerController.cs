@@ -1,14 +1,18 @@
 ﻿using EgitimPortali.DTO;
 using EgitimPortali.Request.Dersler;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class DerslerController : Controller
     {
         public async Task<IActionResult> DersleriListele()

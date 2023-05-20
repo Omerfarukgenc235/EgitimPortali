@@ -70,7 +70,17 @@ namespace EgitimPortali.Repository.SoruCevap
 
         public ICollection<SorularinCevaplari> KullaniciCevaplariSorularaGoreGetir(int id)
         {
-            return _context.SorularinCevaplaris.Where(x => x.SorularID == id ).ToList();
+            return _context.SorularinCevaplaris.Where(x => x.SorularID == id).ToList();
+        }
+
+        public bool SoruCevapGuncelle(int id)
+        {
+            var deger = _context.SorularinCevaplaris.Where(x => x.Id == id).FirstOrDefault();
+            if (deger.Dogruluk == true)
+                deger.Dogruluk = false;
+            else
+                deger.Dogruluk = true;
+            return Kaydet();
         }
     }
 }

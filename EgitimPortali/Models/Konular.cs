@@ -8,6 +8,7 @@ namespace EgitimPortali.Models
         public Dersler Dersler { get; set; }
         public string Name { get; set; }
         public string? Resim { get; set; }
+        public int KonuSirasi { get; set; }
         public ICollection<DersIcerikleri> DersIcerikleris { get; set; }
 
     }

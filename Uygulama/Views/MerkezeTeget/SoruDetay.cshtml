@@ -33,7 +33,7 @@
     <section class="w3l-blogpost-content py-5">
         <div class="container py-md-5 py-4">
             <div class="row">
-                <div class="text-11 col-lg-8">
+                <div class="text-11 col-lg-12">
                     <div class="text11-content">
                         <h1>@Model.Name</h1>
                         <br />
@@ -49,33 +49,6 @@
 @*                        <partial name="~/Views/MerkezeTeget/YorumYap.cshtml" model="new YorumlarPostRequest{ DersIcerikleriID = ViewBag.id}" />
 *@
                     </div>
-                </div>
-                <div class="sidebar-side col-lg-4 col-md-12 col-sm-12 mt-lg-0 mt-5 ps-md-5">
-                    <aside class="sidebar">
-                        <div class="sidebar-widget sidebar-blog-category">
-                            <div class="sidebar-title">
-                                <h4>Sitede Ara</h4>
-                            </div>
-                            <form action="#" class="search-box" method="post">
-                                <div class="form-group">
-                                    <input type="search" name="search" placeholder="Matematik..." required="">
-                                    <button><span class="fa fa-search"></span></button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!--Blog Category Widget-->
-                        @await Component.InvokeAsync("DersMenu")
-
-                        <!-- Popular Post Widget-->
-@*                        @await Component.InvokeAsync("Son3Ders", new { id = ViewBag.konuid })
-*@
-                        <!-- sidebar sticky -->
-                       
-
-                        <!-- //sidebar sticky -->
-
-                    </aside>
                 </div>
             </div>
         </div>

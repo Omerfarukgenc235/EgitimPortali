@@ -3,6 +3,7 @@ using EgitimPortali.Models;
 using EgitimPortali.Repository.Anasayfa;
 using EgitimPortali.Repository.Ders;
 using EgitimPortali.Repository.DersIcerik;
+using EgitimPortali.Repository.DersTakipleri;
 using EgitimPortali.Repository.Hakkýmýzda;
 using EgitimPortali.Repository.Iletisimler;
 using EgitimPortali.Repository.Kategori;
@@ -17,13 +18,10 @@ using EgitimPortali.Repository.TestCevaplari;
 using EgitimPortali.Repository.Testler;
 using EgitimPortali.Repository.TestSorulari;
 using EgitimPortali.Repository.Yorum;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -53,6 +51,7 @@ builder.Services.AddScoped<IKullaniciRolRepository, KullaniciRolRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<ITestSoruRepository, TestSoruRepository>();
 builder.Services.AddScoped<ITestCevapRepository, TestCevapRepository>();
+builder.Services.AddScoped<IDersTakipRepository, DersTakipRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddEndpointsApiExplorer();
@@ -78,7 +77,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.AccessDeniedPath = "/auth/accessdenied";
         options.Cookie.IsEssential = true;
         options.SlidingExpiration = true;
-        options.Cookie.Name = "tokenim";
+        options.Cookie.Name = $".Uygulama.auth";   // todo : deðiþtirin.
+
         options.Cookie.HttpOnly = true;
     })
     .AddJwtBearer(options =>
@@ -92,6 +92,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = $"Uygulama.auth"; // todo : deðiþtirin.
+    options.IdleTimeout = TimeSpan.FromMinutes(180);
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddDbContext<SqlServerDbContext>(options =>
 {

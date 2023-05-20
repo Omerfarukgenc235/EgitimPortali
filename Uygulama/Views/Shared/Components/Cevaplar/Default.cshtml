@@ -4,31 +4,28 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 <div class="comments">
-    <h3 class="aside-title ">Sorunun Cevapları</h3>
+    <h3 class="aside-title ">Soruya Gelen Yanıtlar</h3>
     <div class="comments-grids">
         @foreach (var x in Model)
         {
             <div class="media-grid">
                 <div class="media">
-                    <a class="com" href="#">
-                        <img src="/Edu-School-Starter/assets/images/testi2.jpg"
-                         class="img-fluid radius-image" width="100px"
-                         alt="placeholder image">
-                    </a>
+                   
                     <div class="media-body comments-grid-right">
-                        <h5>Elexa kim</h5>
+
+                      
+                        @if (x.Dogruluk == true)
+                        {
+                            <h5> <i class="fa fa-check" style="color:green"></i> Onaylı Cevap </h5>
+                        }
                         <ul class="p-0">
                             <li class="">
-                                Oct 28, 2021.
+                                @x.CreatedAt
                             </li>
-                            @*     <li>
-                        <a href="#comment" class="">Reply</a>
-                        </li>*@
+
                         </ul>
                         <div class="comment-body">
-
                             @Html.Raw(x.Icerik)
-                            <p><a href="#" class="reply rounded">Yanıtla</a></p>
                         </div>
 
                     </div>

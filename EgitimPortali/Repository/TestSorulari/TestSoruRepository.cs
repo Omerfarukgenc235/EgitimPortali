@@ -23,7 +23,7 @@ namespace EgitimPortali.Repository.TestSorulari
 
         public ICollection<TestSoru> TesteGoreSoruListele(int id)
         {
-            return _context.TestSorus.Where(x => x.TestId == id).ToList();
+            return _context.TestSorus.Where(x => x.TestId == id).OrderBy(x => x.SoruSirasi).ToList();
         }
 
         public bool TestSoruEkle(TestSoruPostRequest test)
@@ -68,6 +68,7 @@ namespace EgitimPortali.Repository.TestSorulari
             if (testsoru.CevapE != null) cases.CevapE = testsoru.CevapE;
             if (testsoru.DogruCevap != null) cases.DogruCevap = (int)testsoru.DogruCevap;          
             if (testsoru.TestId != null) cases.TestId = (int)testsoru.TestId;
+            if (testsoru.SoruSirasi != null) cases.SoruSirasi = (int)testsoru.SoruSirasi;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, testsoru);
             return Kaydet();
@@ -80,7 +81,7 @@ namespace EgitimPortali.Repository.TestSorulari
 
         public ICollection<TestSoru> TestSoruListele()
         {
-            return _context.TestSorus.ToList();
+            return _context.TestSorus.OrderBy(x => x.SoruSirasi).ToList();
         }
 
         public bool TestSoruSil(TestSoru test)

@@ -1,5 +1,7 @@
 ﻿using EgitimPortali.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Net.Sockets;
 using System.Security.Claims;
 
 namespace EgitimPortali.Context
@@ -56,6 +58,7 @@ namespace EgitimPortali.Context
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestSoru> TestSorus { get; set; }
         public DbSet<TestCevap> TestCevaps { get; set; }
+        public DbSet<DersTakip> DersTakips { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -63,6 +66,26 @@ namespace EgitimPortali.Context
             modelBuilder.Entity<Kullanicilar>()
                 .HasIndex(b => b.Mail)
                 .IsUnique();
+            #endregion
+            #region Soft Delete
+            modelBuilder.Entity<AnaSayfa>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<DersIcerikleri>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Dersler>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<DersTakip>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Hakkimizda>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Iletisim>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Kategoriler>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Konular>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Kullanicilar>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<KullanicilarinRolleri>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Reklamlar>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Roller>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Sorular>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<SorularinCevaplari>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Test>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<TestSoru>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<TestCevap>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Yorumlar>().HasQueryFilter(b => !b.IsDeleted);
             #endregion
 
             #region UserRoles

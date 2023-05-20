@@ -18,7 +18,7 @@
                     <span>Bu sayfada testinize yeni sorular ekleyebilir ve güncelleyebilirsiniz.</span>
                     <br />
                     <br />
-                    <a href="/Ogretmen/SoruEkle/@ViewBag.id"><button title="Yeni Soru Ekle" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> <span class="bold">Yeni Soru Ekle</span></button></a>                
+                    <a href="/Ogretmen/SoruEkle/@ViewBag.id"><button title="Yeni Soru Ekle" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> <span class="bold">Yeni Soru Ekle</span></button></a>
                 </div>
             </div>
             <div class="faq-item">
@@ -27,6 +27,10 @@
                     <div class="row container">
                         <div class="col-md-8">
                             <h4 class="card-title">@x.Soru</h4>
+                            @if (x.SoruGorsel != null)
+                            {
+                                <img src="@x.SoruGorsel" height="170px;" width="270px;">
+                            }
                             <div class="skin skin-minimal">
                                 <div class="form-group">
                                     <div class="form-group">
@@ -40,33 +44,59 @@
                                                             <label class="custom-control-label" for="order.CevapID">
                                                                 @x.CevapA
                                                             </label>
+
                                                         </div>
+                                                        @if (x.GorselA != null)
+                                                        {
+                                                            <img src="@x.GorselA" height="150px;" width="250px;">
+                                                        }
                                                         <div class="custom-control custom-radio">
                                                             <input type="radio" id=".CevapID" name="x.SoruID" value="order.CevapID" class="custom-control-input">
                                                             <label class="custom-control-label" for="order.CevapID">
                                                                 @x.CevapB
                                                             </label>
+
+
                                                         </div>
+                                                        @if (x.GorselB != null)
+                                                        {
+                                                            <img src="@x.GorselB" height="150px;" width="250px;">
+                                                        }
                                                         <div class="custom-control custom-radio">
                                                             <input type="radio" id=".CevapID" name="x.SoruID" value="order.CevapID" class="custom-control-input">
                                                             <label class="custom-control-label" for="order.CevapID">
                                                                 @x.CevapC
                                                             </label>
+
                                                         </div>
+                                                        @if (x.GorselC != null)
+                                                        {
+                                                            <img src="@x.GorselC" height="150px;" width="250px;">
+                                                        }
                                                         <div class="custom-control custom-radio">
                                                             <input type="radio" id=".CevapID" name="x.SoruID" value="order.CevapID" class="custom-control-input">
                                                             <label class="custom-control-label" for="order.CevapID">
                                                                 @x.CevapD
                                                             </label>
+
                                                         </div>
-                                                         <div class="custom-control custom-radio">
+                                                        @if (x.GorselD != null)
+                                                        {
+                                                            <img src="@x.GorselD" height="150px;" width="250px;">
+                                                        }
+                                                        <div class="custom-control custom-radio">
                                                             <input type="radio" id=".CevapID" name="x.SoruID" value="order.CevapID" class="custom-control-input">
                                                             <label class="custom-control-label" for="order.CevapID">
                                                                 @x.CevapE
                                                             </label>
+
                                                         </div>
+                                                        @if (x.GorselE != null)
+                                                        {
+                                                            <img src="@x.GorselE" height="150px;" width="250px;">
+                                                        }
                                                     </div>
-                                                </div>                                       
+                                                </div>
                                             </table>
                                         </div>
                                     </div>

@@ -11,5 +11,7 @@
         public string? CevapD { get; set; }
         public string? CevapE { get; set; }
         public int? DogruCevap { get; set; }
+        public int? SoruSirasi { get; set; }
+
     }
 }

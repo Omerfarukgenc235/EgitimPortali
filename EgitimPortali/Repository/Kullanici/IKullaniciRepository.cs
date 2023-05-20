@@ -14,11 +14,11 @@ namespace EgitimPortali.Repository.Kullanici
         bool KullaniciKontrol(int id);
         bool KullaniciEkle(Kullanicilar kullanicilar);
         bool KullaniciGuncelle(int Id,KullanicilarUpdateRequest kullanicilar);
-        bool KullaniciSil(Kullanicilar kullanicilar);
+        bool KullaniciSil(int id);
         bool Kaydet();
         public int Login(AuthenticateRequest user);
         public int GetMyName();
-        public bool Register(KullanicilarPostRequest userPostRequest);
+        KullaniciReadDto Register(KullanicilarPostRequest userPostRequest);
         public UserTokenReadDto GetByIdRefreshId(int Id);
         public bool TokenChange(RefreshToken token);
 

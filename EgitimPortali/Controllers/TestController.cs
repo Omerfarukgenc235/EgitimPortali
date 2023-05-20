@@ -22,6 +22,7 @@ namespace EgitimPortali.Controllers
             _testRepository = testRepository;
             _mapper = mapper;
         }
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Test>))]
 
@@ -32,7 +33,15 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
- 
+        [HttpGet("CozumKontrol/{cozumtestid}")]
+        public IActionResult KullaniciTestKontrolu(int cozumtestid)
+        {
+            if (_testRepository.KullaniciCozumKontrol(cozumtestid))
+                return BadRequest("Bu Testi Daha Önceden Çözmüşsünüz.");
+            else
+                return Ok();
+        }
+
         [HttpPost]
         public IActionResult TestEkle(TestPostRequest testCreate)
         {
@@ -97,7 +106,7 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
-
+        [AllowAnonymous]
         [HttpGet("konu/{konuid}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Test>))]
         public IActionResult KonuListele(int konuid)

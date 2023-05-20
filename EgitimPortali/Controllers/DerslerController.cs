@@ -4,13 +4,14 @@ using EgitimPortali.Models;
 using EgitimPortali.Repository.Ders;
 using EgitimPortali.Request.Dersler;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EgitimPortali.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class DerslerController : ControllerBase
@@ -24,6 +25,7 @@ namespace EgitimPortali.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Dersler>))]
         public IActionResult DersListele()
         {
@@ -96,6 +98,7 @@ namespace EgitimPortali.Controllers
 
             return NoContent();
         }
+        [AllowAnonymous]
         [HttpGet("{derslerId}")]
         [ProducesResponseType(200, Type = typeof(Kategoriler))]
         [ProducesResponseType(400)]

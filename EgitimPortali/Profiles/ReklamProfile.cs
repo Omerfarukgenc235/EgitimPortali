@@ -11,6 +11,7 @@ namespace EgitimPortali.Profiles
         {
             CreateMap<Reklamlar, ReklamlarDto>();
             CreateMap<ReklamlarDto, Reklamlar>();
+            CreateMap<ReklamlarPostRequest, Reklamlar>();
             CreateMap<Reklamlar, ReklamlarUpdateRequest>();
         }
     }

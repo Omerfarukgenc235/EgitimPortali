@@ -109,7 +109,7 @@
                                     dd = "color:red";
                                 }
                             }
-                            else
+                            else if(deger == 5)
                             {
                                 eisaret = "checked";
                                 if (x.DogruCevap != 5)
@@ -118,6 +118,13 @@
                                 }
                             }
                             <label>@a-) @x.Soru</label>
+                            <br />
+                             @if (x.SoruGorsel != null)
+                            {
+                                <img src="@x.SoruGorsel" height="300px;" width="570px;">
+                            }
+                            <br />
+                            <br />
                             a++;
                           
                             
@@ -126,29 +133,42 @@
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="@x.Id A" @aisaret name="@x.Id" value="1" class="custom-control-input">
                                         <label class="custom-control-label"  style="@aa" for="@x.Id A">
-                                            @x.CevapA
+                                            A-) @x.CevapA
                                         </label>
+                                        
                                     </div>
                                 </div>
+                                @if (x.GorselA != null)
+                                {
+                                    <img src="@x.GorselA" height="150px;" width="250px;">
+                                }
                             </div>
                             <div class="skin skin-minimal">
                                 <div class="radio-list">
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="@x.Id B" @bisaret name="@x.Id" value="2" class="custom-control-input">
                                         <label class="custom-control-label" style="@bb" for="@x.Id B">
-                                            @x.CevapB
+                                            B-) @x.CevapB
                                         </label>
                                     </div>
                                 </div>
+                                @if (x.GorselB != null)
+                                {
+                                    <img src="@x.GorselB" height="150px;" width="250px;">
+                                }
                             </div>
                             <div class="skin skin-minimal">
                                 <div class="radio-list">
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="@x.Id C" @cisaret name="@x.Id" value="3" class="custom-control-input">
                                         <label class="custom-control-label" style="@cc" for="@x.Id C">
-                                             @x.CevapC
+                                            C-)  @x.CevapC
                                         </label>
                                     </div>
+                                    @if (x.GorselC != null)
+                                    {
+                                        <img src="@x.GorselC" height="150px;" width="250px;">
+                                    }
                                 </div>
                             </div>
                             <div class="skin skin-minimal">
@@ -156,9 +176,14 @@
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="@x.Id D" @disaret name="@x.Id" value="4" class="custom-control-input">
                                         <label class="custom-control-label" style="@dd" for="@x.Id D">
-                                             @x.CevapD
+                                            D-) @x.CevapD
                                         </label>
                                     </div>
+                                   
+                                    @if (x.GorselD != null)
+                                    {
+                                        <img src="@x.GorselD" height="150px;" width="250px;">
+                                    }
                                 </div>
                             </div>
                             <div class="skin skin-minimal">
@@ -166,9 +191,13 @@
                                     <div class="custom-control custom-radio">
                                         <input type="radio" id="@x.Id E" @eisaret name="@x.Id" value="5" class="custom-control-input">
                                         <label class="custom-control-label" style="@ee" for="@x.Id E">
-                                            @x.CevapE
+                                            E-) @x.CevapE
                                         </label>
                                     </div>
+                                    @if (x.GorselE != null)
+                                    {
+                                        <img src="@x.GorselE" height="150px;" width="250px;">
+                                    }
                                 </div>
                             </div>
                             <br />

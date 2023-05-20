@@ -44,7 +44,7 @@
                                 </p>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <a href="/Iletisim/IletisimMesajiSil/@x.Id" class="btn btn-danger btn-xs" type="button">Sil</a>
+                                        <a href="/Iletisim/IletisimMesajiSil/@x.Id" data-id="@x.Id" class="btn btn-danger btn-xs demo4" type="button">Sil</a>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="small text-right">
@@ -66,16 +66,36 @@
 
 
 
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="~/admin/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('.demo4').on('click', function (event) {
+            event.preventDefault();
+            var btn = $(this);
+            const url = $(this).attr('href');
+            swal({
+                title: 'Mesajı Silmek İstediğinizden Emin Misiniz ?',
+                text: "Mesajı silmeniz durumunda bir daha asla ulaşılamayacaktır.",
+                icon: 'info',
+                buttons: ["Vazgeç", "Onayla!"],
+            }).then(function (value) {
+                if (value) {
+                    var id = btn.data("id");
+                    $.ajax({
+                        url: "/Iletisim/IletisimMesajiSil/" + id,
+                        type: "post",
+                        dataType: "json",
+                        success: function (func) {
+                            window.location.reload();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 

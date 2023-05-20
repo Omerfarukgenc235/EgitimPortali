@@ -1,5 +1,6 @@
 ﻿using EgitimPortali.DTO;
 using EgitimPortali.Request.KullanicilarinRolleri;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class KullaniciController : Controller
     {
 
@@ -98,7 +100,19 @@ namespace Uygulama.Controllers
                 return View(p);
             }
         }
+        public async Task<IActionResult> KullaniciSil(int id)
+        {
+            var httpClient = new HttpClient();
+            var Token = Request.Cookies["tokenim"];
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
 
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/Kullanici/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("ButunKullanicilar");
+            }
+            return View();
+        }
         public async Task<IActionResult> KullaniciYetkiSil(int id)
         {
             var httpClient = new HttpClient();

@@ -8,6 +8,7 @@ namespace EgitimPortali.Repository.Konu
         ICollection<Konular> KonulariListele();
         ICollection<Konular> KonulariListele(int dersid);
         Konular KonuGetir(int id);
+        string KonuName(int id);
         bool KonuKontrol(int id);
         bool KonuEkle(Konular konular);
         bool KonuGuncelle(int Id,KonularUpdateRequest konular);

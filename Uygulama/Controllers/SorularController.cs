@@ -1,10 +1,13 @@
 ﻿using EgitimPortali.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class SorularController : Controller
     {
         public async Task<IActionResult> ButunSorular()
@@ -41,7 +44,7 @@ namespace Uygulama.Controllers
             var Token = Request.Cookies["tokenim"];
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
 
-            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/SorularinCevaplari/" + id);
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:7179/api/Sorular/" + id);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("ButunSorular");

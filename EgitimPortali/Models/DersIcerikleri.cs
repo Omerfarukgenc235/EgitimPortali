@@ -10,6 +10,7 @@ namespace EgitimPortali.Models
         public string? Resim { get; set; }
         public string? PdfYolu { get; set; }
         public ICollection<Yorumlar> Yorumlar { get; set; }
+        public ICollection<DersTakip> DersTakip { get; set; }
         public int KonularID { get; set; }
         public Konular Konular { get; set; }
 

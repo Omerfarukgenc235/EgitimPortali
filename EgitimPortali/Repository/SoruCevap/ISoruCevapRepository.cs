@@ -1,4 +1,5 @@
 ﻿using EgitimPortali.Models;
+using EgitimPortali.Request.Konular;
 
 namespace EgitimPortali.Repository.SoruCevap
 {
@@ -8,6 +9,8 @@ namespace EgitimPortali.Repository.SoruCevap
         ICollection<SorularinCevaplari> CevaplariSoralaraGoreGetir(int id);
         ICollection<SorularinCevaplari> KullaniciCevaplariSorularaGoreGetir(int id);
         SorularinCevaplari SorularinCevaplariGetir(int id);
+        bool SoruCevapGuncelle(int id);
+
         bool SorularinCevaplariKontrol(int id);
         bool SorularinCevaplariEkle(SorularinCevaplari sorularinCevaplari);
         bool SorularinCevaplariGuncelle(SorularinCevaplari sorularinCevaplari);

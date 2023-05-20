@@ -19,7 +19,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="navbar-brand" href="/MerkezeTeget/Anasayfa">
-                    <i class="fas fa-graduation-cap"></i>Merkeze Teğet
+                    <i class="fas fa-graduation-cap"></i>Eğitim Portalı
                 </a>
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
@@ -30,7 +30,7 @@
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/MerkezeTeget/Anasayfa">Ana Sayfa</a>
+                            <a class="nav-link" aria-current="page" href="/MerkezeTeget/Anasayfa">ANA SAYFA</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="TRUE">
@@ -66,30 +66,42 @@
                                 <li><a class="dropdown-item" href="/MerkezeTeget/Konular/20">Biyoloji</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="courses.html">KPSS</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="TRUE">
+                                KPSS <i class="fas fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown" data-bs-popper="none">
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/21">Türkçe</a></li>
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/22">Matematik</a></li>
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/23">Geometri</a></li>
+                            </ul>
                         </li>
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="TRUE">
                                 DGS <i class="fas fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown" data-bs-popper="none">
-                                <li><a class="dropdown-item" href="about.html">Türkçe</a></li>
-                                <li><a class="dropdown-item" href="email-template.html">Matematik</a></li>
-                                <li><a class="dropdown-item" href="email-template.html">Geometri</a></li>
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/24">Türkçe</a></li>
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/25">Matematik</a></li>
+                                <li><a class="dropdown-item" href="/MerkezeTeget/Konular/26">Geometri</a></li>
                             </ul>
                         </li>
-
-                  
-
                         <li class="nav-item">
                             <a class="nav-link" href="/MerkezeTeget/Iletisim">İLETİŞİM</a>
                         </li>
+                        @if (User.Claims.Any())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Ogrenci/Profilim">KULLANICI PANELİ</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Login/GirisYap">GİRİŞ YAP</a>
+                            </li>
+                        }
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/DersIcerikleri/YeniDersEkle">GİRİŞ YAP</a>
-                        </li>
 
                     </ul>
                     <!-- search-right -->
@@ -187,7 +199,7 @@
     </button>
     <script>
         // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function() {
+        window.onscroll = function () {
             scrollFunction()
         };
 
@@ -217,7 +229,7 @@
     <!-- //theme switch js (light and dark)-->
     <!-- MENU-JS -->
     <script>
-        $(window).on("scroll", function() {
+        $(window).on("scroll", function () {
             var scroll = $(window).scrollTop();
 
             if (scroll >= 80) {
@@ -228,14 +240,14 @@
         });
 
         //Main navigation Active Class Add Remove
-        $(".navbar-toggler").on("click", function() {
+        $(".navbar-toggler").on("click", function () {
             $("header").toggleClass("active");
         });
-        $(document).on("ready", function() {
+        $(document).on("ready", function () {
             if ($(window).width() > 991) {
                 $("header").removeClass("active");
             }
-            $(window).on("resize", function() {
+            $(window).on("resize", function () {
                 if ($(window).width() > 991) {
                     $("header").removeClass("active");
                 }
@@ -245,8 +257,8 @@
     <!-- //MENU-JS -->
     <!-- disable body scroll which navbar is in active -->
     <script>
-        $(function() {
-            $('.navbar-toggler').click(function() {
+        $(function () {
+            $('.navbar-toggler').click(function () {
                 $('body').toggleClass('noscroll');
             })
         });

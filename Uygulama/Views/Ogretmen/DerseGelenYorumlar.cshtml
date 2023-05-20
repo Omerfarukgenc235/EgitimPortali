@@ -14,23 +14,7 @@
                     <h5>Yanıtlar</h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="row m-b-sm m-t-sm">
-
-                        <div class="col-md-12">
-                            @using (Html.BeginForm("Index", "Yorumlar", FormMethod.Post))
-                            {
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" name="n" placeholder="Yorum ara...">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-success" type="submit">
-                                            <i class="fa fa-search"></i>
-                                            Ara
-                                        </button>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
+                   
                     <br />
                     <div class="table-responsive">
                         @foreach (var x in Model)
@@ -70,3 +54,35 @@
         </div>
     </div>
 </div>
+<script src="~/admin/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $('.demo4').on('click', function (event) {
+        event.preventDefault();
+        var btn = $(this);
+        const url = $(this).attr('href');
+        swal({
+            title: 'Yorumu Kaldırmak İstediğinizden Emin Misiniz ?',
+            text: "Yorumunuzu kaldırmanız durumunda dersin altında gözükmeyecektir.",
+            icon: 'info',
+            buttons: ["Vazgeç", "Onayla!"],
+        }).then(function (value) {
+            if (value) {
+                var id = btn.data("id");
+                $.ajax({
+                    url: "/Ogretmen/YorumKaldir/" + id,
+                    type: "post",
+                    dataType: "json",
+                    success: function (func) {
+                        window.location.reload();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    });
+   
+    
+</script>

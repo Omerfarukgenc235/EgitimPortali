@@ -3,60 +3,67 @@
 @{
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html lang="zxx">
 
 <head>
-    <title>Merkeze Teğet Kayıt Ol</title>
-    <!-- Meta tag Keywords -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8" />
-    <meta name="keywords"
-          content="Report Login Form Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-    <!-- //Meta tag Keywords -->
-    <link href="//fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!--/Style-CSS -->
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
-    <!--//Style-CSS -->
+	<title>Eğitim Portalı Kayıt Ol</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords"
+		  content="Trendz Login Form Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
 
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="all">
-
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- //Meta tag Keywords -->
+	<!--/Style-CSS -->
+	<link rel="stylesheet" href="~/web/css/style.css" type="text/css" media="all" />
+	<!--//Style-CSS -->
 </head>
 
 <body>
+	<!-- /login-section -->
 
-    <!-- form section start -->
-    <section class="w3l-hotair-form">
-        <h1>Merkeze Teğet Kayıt Olma Sayfası</h1>
-        <div class="container">
-            <!-- /form -->
-            <div class="workinghny-form-grid">
-                <div class="main-hotair">
-                    <div class="content-wthree">
-                        <h2>Kayıt Ol</h2>
-                        <form  method="post">
-                            <input type="text" class="text" name="Ad" placeholder="Ad" required="" autofocus>
-                            <input type="text" class="text" name="Soyad" placeholder="Soyad" required="" autofocus>
-                            <input type="text" class="text" name="Mail" placeholder="Mail" required="" autofocus>
-                            <input type="password" class="password" name="Sifre" placeholder="Şifre" required="" autofocus>
-                            <button class="btn" type="submit">Kayıt Ol</button>
-                        </form>
+	<section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">			
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="main-bg">
+							<h6 class="sec-one">Kayıt Ol</h6>
+							<div class="speci-login first-look">
+								<img src="~/web/images/user.png" alt="" class="img-responsive">
+							</div>
+						</div>
+						<div class="bottom-content">
+						
+							<form action="#" method="post">
+								<input type="text" class="input-form" name="Ad" placeholder="Ad" required="" autofocus>
+								<input type="text" class="input-form" name="Soyad" placeholder="Soyad" required="" autofocus>
 
-                        <p class="account">Hesabın mı var ? <a href="/Login/GirisYap">Giriş Yap</a></p>
-                    </div>
-                    <div class="w3l_form align-self">
-                        <div class="left_grid_info">
-                            <img src="images/1.png" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- //form -->
-        </div>
-        <!-- copyright-->
-        <!-- //copyright-->
-    </section>
-    <!-- //form section start -->
+								<input type="email" name="Mail" class="input-form" placeholder="Mail"
+									   required="required" />
+								<input type="password" name="Sifre" class="input-form"
+									   placeholder="Şifre" required="required" />
+								<button type="submit" class="loginhny-btn btn">Kayıt Ol</button>
+
+							</form>
+							<p class="account">Hesabın mı var ? <a href="/Login/GirisYap">Giriş Yap</a></p>
+
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</section>
 </body>
 
 </html>

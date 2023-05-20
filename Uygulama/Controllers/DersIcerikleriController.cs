@@ -1,5 +1,6 @@
 ﻿using EgitimPortali.DTO;
 using EgitimPortali.Request.DersIcerikleri;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -10,6 +11,8 @@ using System.Text;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class DersIcerikleriController : Controller
     {
         public async Task<IActionResult> Derslerim()

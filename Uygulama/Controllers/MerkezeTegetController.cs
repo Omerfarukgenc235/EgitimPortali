@@ -34,7 +34,7 @@ namespace Uygulama.Controllers
 
             var jsonEmployee = JsonConvert.SerializeObject(p);
             StringContent content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
-      
+
             var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/Iletisim", content);
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -42,6 +42,7 @@ namespace Uygulama.Controllers
             }
             return View(p);
         }
+
         public async Task<IActionResult> Ders(int id)
         {
             var httpClient = new HttpClient();
@@ -52,8 +53,8 @@ namespace Uygulama.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonEmployee = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<DersIcerikleriDto>(jsonEmployee);     
-                ViewBag.id = id;      
+                var values = JsonConvert.DeserializeObject<DersIcerikleriDto>(jsonEmployee);
+                ViewBag.id = id;
                 ViewBag.konuid = values.KonularID;
                 if (values != null)
                     return View(values);
@@ -73,7 +74,7 @@ namespace Uygulama.Controllers
 
             var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/Yorumlar", content);
             if (responseMessage.IsSuccessStatusCode)
-            { 
+            {
                 return View();
             }
             return View(p);
@@ -90,11 +91,14 @@ namespace Uygulama.Controllers
             StringContent content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
             var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/Yorumlar", content);
             if (responseMessage.IsSuccessStatusCode)
-            {          
+            {
                 return RedirectToAction("Ders", new { id = sayi });
             }
-            return View(commentAddDto);
-        }     
+            else
+            {
+                return RedirectToAction("YetkisizIslem");
+            }
+        }
         public async Task<IActionResult> Son3Ders(int id)
         {
             var httpClient = new HttpClient();
@@ -129,7 +133,7 @@ namespace Uygulama.Controllers
             public string Name { get; set; }
         }
         [HttpGet]
-        public async Task<IActionResult> Konular(int id)
+        public async Task<IActionResult> Konular(int id, int page = 1)
         {
             var httpClient = new HttpClient();
             var Token = Request.Cookies["tokenim"];
@@ -152,23 +156,23 @@ namespace Uygulama.Controllers
             else
                 return RedirectToAction("GirisYap", "Login");
         }
+
+
         public async Task<IActionResult> DersIcerikleri(int id)
         {
             var httpClient = new HttpClient();
             var Token = Request.Cookies["tokenim"];
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
-
             ViewBag.id = id;
             var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/DersIcerikleri/konular/" + id);
-
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<IEnumerable<DersIcerikleriDto>>(jsonString);
-
-
-
             var responseMessage2 = await httpClient.GetAsync("https://localhost:7179/api/Test/konu/" + id);
             var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
             var values2 = JsonConvert.DeserializeObject<IEnumerable<TestDto>>(jsonString2);
+            var responseMessage3 = await httpClient.GetAsync("https://localhost:7179/api/Konular/Konuid?id=" + id);
+            var jsonString3 = await responseMessage3.Content.ReadAsStringAsync();
+            ViewBag.dersad = jsonString3;
             KonuIcerikleris cs = new KonuIcerikleris();
             cs.dersIcerikleriDtos = values;
             cs.Tests = values2;
@@ -204,7 +208,7 @@ namespace Uygulama.Controllers
                 var jsonEmployee = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<SorularDto>(jsonEmployee);
                 ViewBag.id = id;
-                if (values != null)
+                if (values != null && Token != null)
                     return View(values);
                 else
                     return RedirectToAction("GirisYap", "Login");
@@ -254,23 +258,33 @@ namespace Uygulama.Controllers
             var httpClient = new HttpClient();
             var Token = Request.Cookies["tokenim"];
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
-            var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/TestSoru/testsorulari/" + id);
-            var jsonString = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<TestSoruDto>>(jsonString);
-            ViewBag.id = id;
-            if (values != null)
-                return View(values);
+
+
+            var responseMessage2 = await httpClient.GetAsync("https://localhost:7179/api/Test/CozumKontrol/" + id);
+            if (responseMessage2.IsSuccessStatusCode)
+            {
+                var responseMessage = await httpClient.GetAsync("https://localhost:7179/api/TestSoru/testsorulari/" + id);
+                var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<TestSoruDto>>(jsonString);
+                ViewBag.id = id;
+                if (values != null)
+                    return View(values);
+                else
+                    return RedirectToAction("GirisYap", "Login");
+            }
             else
-                return RedirectToAction("GirisYap", "Login");
+                return RedirectToAction("TestCevaplarim", "Ogrenci", new { id = id });
+
+
 
         }
         [HttpPost]
-        public async Task<IActionResult> Test(int id,TestCevapPostRequest p)
+        public async Task<IActionResult> Test(int id, TestCevapPostRequest p)
         {
             var a = Request.Form.ToList();
-            int b = Request.Form.Count; 
+            int b = Request.Form.Count;
             var deger = Request.Form.ToList();
-            foreach(var x in deger)
+            foreach (var x in deger)
             {
                 p.TestSoruId = int.Parse(x.Key);
                 p.CevapId = int.Parse(x.Value);
@@ -280,9 +294,17 @@ namespace Uygulama.Controllers
                 var Token = Request.Cookies["tokenim"];
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{Token}");
                 StringContent content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
-                var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/TestCevap", content);     
+                var responseMessage = await httpClient.PostAsync("https://localhost:7179/api/TestCevap", content);
             }
             return RedirectToAction("TestCevaplarim", "Ogrenci", new { id = p.TestId });
+        }
+        public IActionResult Hata()
+        {
+            return View();
+        }
+        public IActionResult YetkisizIslem()
+        {
+            return View();
         }
         [HttpGet]
         public IActionResult Deneme()
@@ -294,15 +316,15 @@ namespace Uygulama.Controllers
         {
             var a = Request.Form.ToList();
             int b = Request.Form.Count;
-      
-            foreach(var x in a)
+
+            foreach (var x in a)
             {
                 b--;
-                if(b > 0)
-                {              
+                if (b > 0)
+                {
                     p.TestSoruId = int.Parse(x.Key);
                     p.CevapId = int.Parse(x.Value);
-                }            
+                }
             }
             return View();
         }

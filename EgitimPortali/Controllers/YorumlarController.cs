@@ -101,6 +101,7 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(kategori);
         }
+        [AllowAnonymous]
         [HttpGet("yorumlar/{icerikid}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Yorumlar>))]
         public IActionResult IcerikYorumlariniListele(int icerikid)

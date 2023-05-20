@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_OgretmenLayout.cshtml";
 }
 
-<a href="/Ogretmen/YeniDersIcerigiEkle/@ViewBag.id" class="btn btn-success" >Yeni İçerik Ekle </a> 
+<a href="/Ogretmen/YeniDersIcerigiEkle/@ViewBag.id" class="btn btn-success">Yeni İçerik Ekle </a>
 <br />
 <br />
 <div class="ibox ">
@@ -37,10 +37,10 @@
                     <td><center><a href="/MerkezeTeget/Ders/@x.Id" class="btn btn-warning"><i class="fa fa-link"></i> İçeriğe Git</a></center></td>
                     <td><center><a href="/Ogretmen/DerseGelenYorumlar/@x.Id" class="btn btn-success"><i class="fa fa-comments"></i> Yorumlar</a></center></td>
                     <td><center><a href="/Ogretmen/IcerikDuzenle/@x.Id" class="btn btn-primary"><i class="fa fa-edit"></i> Düzenle</a></center></td>
-                    <td><center><a href="/Ogretmen/IcerikSil/@x.Id" class="btn btn-danger"><i class="fa fa-trash"></i> Sil</a></center></td>
+                    <td><center><a href="/Ogretmen/IcerikSil/@x.Id" data-id="@x.Id" class="btn btn-danger demo4"><i class="fa fa-trash"></i> Sil</a></center></td>
                 </tr>
             }
-       
+
         </table>
     </div>
     <br />
@@ -63,7 +63,7 @@
                     <th><center>Testi Sil</center></th>
                 </tr>
             </thead>
-          
+
             @foreach (var y in Model.Tests)
             {
                 <tr>
@@ -76,9 +76,66 @@
                     <td><center>@y.Name</center></td>
                     <td><center><a href="/MerkezeTeget/Test/@y.Id" class="btn btn-warning"><i class="fa fa-link"></i> Teste Git</a></center></td>
                     <td><center><a href="/Ogretmen/Test/@y.Id" class="btn btn-primary"><i class="fa fa-edit"></i> Test Detay</a></center></td>
-                    <td><center><a href="/Ogretmen/IcerikSil/@y.Id" class="btn btn-danger"><i class="fa fa-trash"></i> Sil</a></center></td>
+                    <td><center><a href="/Ogretmen/IcerikSil/@y.Id" data-id="@y.Id" class="btn btn-danger demo5"><i class="fa fa-trash"></i> Sil</a></center></td>
                 </tr>
             }
         </table>
     </div>
 </div>
+<script src="~/admin/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $('.demo4').on('click', function (event) {
+        event.preventDefault();
+        var btn = $(this);
+        const url = $(this).attr('href');
+        swal({
+            title: 'İçeriği Kaldırmak İstediğinizden Emin Misiniz ?',
+            text: "İçeriği kaldırmanız durumunda bir daha gözükmeyecektir.",
+            icon: 'info',
+            buttons: ["Vazgeç", "Onayla!"],
+        }).then(function (value) {
+            if (value) {
+                var id = btn.data("id");
+                $.ajax({
+                    url: "/Ogretmen/IcerikSil/" + id,
+                    type: "post",
+                    dataType: "json",
+                    success: function (func) {
+                        window.location.reload();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    });
+    $('.demo5').on('click', function (event) {
+        event.preventDefault();
+        var btn = $(this);
+
+        const url = $(this).attr('href');
+        swal({
+            title: 'Testi Kaldırmak İstediğinizden Emin Misiniz ?',
+            text: "Testi kaldırmanız durumunda bir daha gözükmeyecektir.",
+            icon: 'info',
+            buttons: ["Vazgeç", "Onayla!"],
+        }).then(function (value) {
+            if (value) {
+                var id = btn.data("id");
+                $.ajax({
+                    url: "/Ogretmen/TestSil/" + id,
+                    type: "post",
+                    dataType: "json",
+                    success: function (func) {
+                        window.location.reload();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    });
+</script>

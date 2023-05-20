@@ -34,6 +34,7 @@ namespace EgitimPortali.Repository.KullaniciRol
             _context.KullanicilarinRolleris.Add(kullanicilarinRolleri);
             return Kaydet();
         }
+        
 
         public bool KullanicilarinRolGuncelle(int Id, KullanicilarinRolleriUpdateRequest kullanicilarinRolleri)
         {
@@ -93,6 +94,16 @@ namespace EgitimPortali.Repository.KullaniciRol
         public ICollection<KullaniciRolDto> KullanicininRolleri(int id)
         {
             return _mapper.Map<List<KullaniciRolDto>>(_context.KullanicilarinRolleris.Include(x=>x.Roller).Where(x => x.KullaniciID == id).ToList());
+        }
+
+        public bool YeniRolEkle(int id)
+        {
+            KullanicilarinRolleriPostRequest p = new KullanicilarinRolleriPostRequest();
+            p.KullaniciID = id;
+            p.RolID = 1;
+            var deger = _mapper.Map<KullanicilarinRolleri>(p);
+            _context.KullanicilarinRolleris.Add(deger);
+            return Kaydet();
         }
     }
 }

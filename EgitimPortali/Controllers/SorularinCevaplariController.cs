@@ -31,13 +31,12 @@ namespace EgitimPortali.Controllers
                 return BadRequest(ModelState);
             return Ok(deger);
         }
+
         [HttpPost]
         public IActionResult KonuEkle(SorularinCevaplariPostRequest sorucevapCreate)
         {
             if (sorucevapCreate == null)
                 return BadRequest(ModelState);
-
-
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -52,6 +51,17 @@ namespace EgitimPortali.Controllers
 
             return Ok("Successfuly created");
         }
+
+        [HttpPut("{sorucevapid}")]
+        public IActionResult SoruCevapGuncelle(int sorucevapid)
+        {
+            if (_soruCevapRepository.SoruCevapGuncelle(sorucevapid))
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+
 
         [HttpDelete("{sorucevapId}")]
         [ProducesResponseType(204)]

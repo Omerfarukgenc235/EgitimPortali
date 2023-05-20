@@ -31,7 +31,10 @@ namespace EgitimPortali.Repository.Konu
         {
             return _context.Konulars.Where(x => x.Id == id).FirstOrDefault();
         }
-
+        public string KonuName(int id)
+        {
+            return _context.Konulars.Where(x => x.Id == id).Select(x => x.Name).FirstOrDefault();
+        }
         public bool KonuGuncelle(int Id,KonularUpdateRequest konular)
         {
             if (konular == null)
@@ -57,6 +60,7 @@ namespace EgitimPortali.Repository.Konu
             if (konular.Name != null) cases.Name = konular.Name;
             if (konular.Resim != null) cases.Resim = konular.Resim;
             if (konular.DerslerID != null) cases.DerslerID = (int)konular.DerslerID;
+            if (konular.KonuSirasi != null) cases.KonuSirasi = (int)konular.KonuSirasi;
             _context.Entry(cases).State = EntityState.Modified;
             _mapper.Map(cases, konular);
             return Kaydet();
@@ -69,13 +73,12 @@ namespace EgitimPortali.Repository.Konu
 
         public ICollection<Konular> KonulariListele()
         {
-
-            return _context.Konulars.Include(x=>x.Dersler).ToList();
+            return _context.Konulars.Include(x=>x.Dersler).OrderBy(x => x.KonuSirasi).ToList();
         }
 
         public ICollection<Konular> KonulariListele(int dersid)
         {
-            return _context.Konulars.Where(x => x.DerslerID == dersid).ToList();
+            return _context.Konulars.Where(x => x.DerslerID == dersid).OrderBy(x => x.KonuSirasi).ToList();
         }
 
         public bool KonuSil(Konular konular)

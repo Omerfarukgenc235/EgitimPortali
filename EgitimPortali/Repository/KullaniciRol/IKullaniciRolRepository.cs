@@ -10,6 +10,7 @@ namespace EgitimPortali.Repository.KullaniciRol
         ICollection<KullaniciRolDto> KullanicininRolleri(int id);
         public IEnumerable<string> GetRoleByUserId(int userId);
         KullanicilarinRolleri KullanicilarinRolleriGetir(int id);
+        bool YeniRolEkle(int id);
         bool KullanicilarinRolKontrol(KullanicilarinRolleriPostRequest p);
         bool KullanicilarinRolEkle(KullanicilarinRolleri kullanicilarinRolleri);
         bool KullanicilarinRolGuncelle(int Id,KullanicilarinRolleriUpdateRequest kullanicilarinRolleri);

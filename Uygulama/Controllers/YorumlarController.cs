@@ -1,10 +1,13 @@
 ﻿using EgitimPortali.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Uygulama.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class YorumlarController : Controller
     {
         public async Task<IActionResult> ButunYorumlar()

@@ -36,6 +36,7 @@
                                         <tr>
                                             <th>Konunun Görseli</th>
                                             <th>Konunun Adı</th>
+                                            <th>Konunun Sırası</th>
                                             <th>Konu İçerikleri</th>
                                             <th>Dersi Düzenle</th>
                                             <th>Dersi Sil</th>
@@ -51,9 +52,10 @@
                                                     </center>
                                                 </td>
                                                 <td>@x.Name</td>
+                                                <td>@x.KonuSirasi</td>
                                                 <td><a href="/Ogretmen/KonuIcerikleri/@x.Id" class="btn btn-outline-info">Konu İçerikleri</a></td>
                                                 <td><a href="/Ogretmen/KonuGuncelle/@x.Id" class="btn btn-outline-success">Konuyu Düzenle</a></td>
-                                                <td><a href="/Ogretmen/KonuSil/@x.Id" class="btn btn-outline-danger">Konuyu Sil</a></td>
+                                                <td><a href="/Ogretmen/KonuSil/@x.Id" data-id="@x.Id" class="btn btn-outline-danger demo4">Konuyu Sil</a></td>
                                             </tr>
                                         }
                                     </tbody>
@@ -61,6 +63,7 @@
                                         <tr>
                                             <th>Konunun Görseli</th>
                                             <th>Konunun Adı</th>
+                                            <th>Konunun Sırası</th>
                                             <th>Konu İçerikleri</th>
                                             <th>Dersi Düzenle</th>
                                             <th>Dersi Sil</th>
@@ -84,8 +87,35 @@
     <script src="~/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/admin/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
     <script src="~/admin/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page-Level Scripts -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('.demo4').on('click', function (event) {
+            event.preventDefault();
+            var btn = $(this);
+            const url = $(this).attr('href');
+            swal({
+                title: 'Konuyu Kaldırmak İstediğinizden Emin Misiniz ?',
+                text: "Konuyu kaldırmanız durumunda bu konu bir daha ana sayfada gözükmeyecektir.",
+                icon: 'info',
+                buttons: ["Vazgeç", "Onayla!"],
+            }).then(function (value) {
+                if (value) {
+                    var id = btn.data("id");
+                    $.ajax({
+                        url: "/Ogretmen/KonuSil/" + id,
+                        type: "post",
+                        dataType: "json",
+                        success: function (func) {
+                            window.location.reload();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
     <script>
 
         $(document).ready(function () {

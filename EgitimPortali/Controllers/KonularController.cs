@@ -20,7 +20,7 @@ namespace EgitimPortali.Controllers
             _konularRepository = konularRepository;
             _mapper = mapper;
         }
-     
+
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Konular>))]
         public IActionResult KonuListele()
@@ -37,6 +37,12 @@ namespace EgitimPortali.Controllers
             var deger = _konularRepository.KonulariListele(dersid);
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            return Ok(deger);
+        }
+        [HttpGet("Konuid")]
+        public IActionResult KonuAdi(int id)
+        {
+            var deger = _konularRepository.KonuName(id);
             return Ok(deger);
         }
         [HttpPost]

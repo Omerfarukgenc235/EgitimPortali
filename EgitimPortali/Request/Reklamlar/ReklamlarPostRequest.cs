@@ -5,5 +5,6 @@
         public String UstBaslik { get; set; }
         public String Icerik { get; set; }
         public String Gorsel { get; set; }
+
     }
 }

@@ -29,8 +29,23 @@ namespace EgitimPortali.Repository.Testler
         {
             return _context.Tests.Where(x => x.KonularID == id).ToList();
         }
-    
-
+        public int GetMyName()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return Convert.ToInt16(result);
+        }
+        public bool KullaniciCozumKontrol(int id)
+        {
+            var deger = _context.TestCevaps.Where(x => x.TestId == id && x.CreatedBy == GetMyName()).FirstOrDefault();
+            if (deger != null)
+                return true;
+            else
+                return false;
+        }
 
         public bool TestEkle(TestPostRequest test)
         {

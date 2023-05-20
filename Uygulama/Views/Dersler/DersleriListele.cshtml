@@ -62,7 +62,7 @@
                                             <tr class="gradeA">
                                                 <td>@x.Name</td>  
                                                 <td><a href="/Dersler/DersGuncelle/@x.Id" class="btn btn-outline-success">Düzenle</a></td>
-                                                <td><a href="/Dersler/DersSil/@x.Id" class="btn btn-outline-danger">Sil</a></td>
+                                                <td><a href="/Dersler/DersSil/@x.Id" data-id="@x.Id" class="btn btn-outline-danger demo4">Sil</a></td>
                                             </tr>                                          
                                         }
                                     </tbody>
@@ -91,7 +91,35 @@
     <script src="~/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/admin/js/plugins/dataTables/datatables.min.js" type="text/javascript"></script>
     <script src="~/admin/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $('.demo4').on('click', function (event) {
+            event.preventDefault();
+            var btn = $(this);
+            const url = $(this).attr('href');
+            swal({
+                title: 'Dersi Silmek İstediğinizden Emin Misiniz ?',
+                text: "Dersi silmeniz durumunda kullanıcının bu dersin içerisindeki testlere ve içeriklere ulaşamayacaktır.",
+                icon: 'info',
+                buttons: ["Vazgeç", "Onayla!"],
+            }).then(function (value) {
+                if (value) {
+                    var id = btn.data("id");
+                    $.ajax({
+                        url: "/Dersler/DersSil/" + id,
+                        type: "post",
+                        dataType: "json",
+                        success: function (func) {
+                            window.location.reload();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            window.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
     <!-- Page-Level Scripts -->
     <script>
 

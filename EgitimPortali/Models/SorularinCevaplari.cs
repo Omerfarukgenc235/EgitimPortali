@@ -7,5 +7,6 @@ namespace EgitimPortali.Models
         public int SorularID { get; set; }
         public Sorular Sorular { get; set; }
         public string Icerik { get; set; }
+        public bool Dogruluk { get; set; }
     }
 }
